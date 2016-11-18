@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace GrafischeEditor1
@@ -27,6 +28,22 @@ namespace GrafischeEditor1
 
             g.FillEllipse(brush, rectangle);
             if (this.Selected) g.DrawEllipse(pen, rectangle);
+        }
+
+        public static Ellipsis FromString(string input)
+        {
+            Regex r = new Regex("ellipse [0-9]+ [0-9]+ [0-9]+ [0-9]+");
+
+            if (r.Match(input).Value != input) return null;
+
+            var splits = input.Split(' ');
+
+            int x = Convert.ToInt32(splits[1]);
+            int y = Convert.ToInt32(splits[2]);
+            int w = Convert.ToInt32(splits[3]);
+            int h = Convert.ToInt32(splits[4]);
+
+            return new Ellipsis(x, y, w, h);
         }
     }
 }

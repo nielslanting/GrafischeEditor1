@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace GrafischeEditor1
@@ -20,6 +21,17 @@ namespace GrafischeEditor1
         {
             foreach (Figure figure in this.Figures)
                 figure.Draw(g);
+        }
+
+        public static Group FromString(string input)
+        {
+            Regex r = new Regex("group [0-9]+");
+
+            if (r.Match(input).Value != input) return null;
+
+            int count = Convert.ToInt32(input.Split(' ').LastOrDefault());
+
+            return new Group(0, 0, new List<Figure>(count));
         }
     }
 }

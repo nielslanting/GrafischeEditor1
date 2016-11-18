@@ -22,9 +22,13 @@ namespace GrafischeEditor1
         public Form1()
         {
             InitializeComponent();
-            this.Figures = new List<Figure>();
-            this.Figures.Add(new Square(50, 50, 50, 50));
-            this.Figures.Add(new Ellipsis(100, 50, 50, 50));
+
+            string input = "ellipse 70 150 20 50" + Environment.NewLine + "rectangle 100 100 10 10";
+
+            this.Figures = Parser.StringToFigures(input);
+            //this.Figures = new List<Figure>();
+            //this.Figures.Add(new Square(50, 50, 50, 50));
+            //this.Figures.Add(new Ellipsis(100, 50, 50, 50));
 
             mouseState = new MouseState();
             mouseState.Changed += mouseState_Changed;

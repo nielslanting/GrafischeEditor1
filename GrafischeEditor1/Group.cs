@@ -40,7 +40,7 @@ namespace GrafischeEditor1
             result += String.Format("group {0}", this.Figures.Count) + Environment.NewLine;
 
             foreach (Figure figure in this.Figures)
-                result += figure.ToString();
+                result += figure.ToString() + Environment.NewLine;
 
             return result;
         }

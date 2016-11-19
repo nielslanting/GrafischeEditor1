@@ -46,14 +46,42 @@ namespace GrafischeEditor1
             return stack.ToList();
         }
 
+        private string fixIndentation(string input)
+        {
+            string result = String.Empty;
+            var indent = 0;
+
+            foreach (string line in result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
+            {
+
+            }
+
+            return result;
+        }
         public static string FiguresToString(List<Figure> figures)
         {
             string result = String.Empty;
 
+            // Get all the lines
+            string lines = String.Empty;
             foreach (Figure figure in figures)
-                result += figure.ToString() + Environment.NewLine;
+                lines += figure.ToString() + Environment.NewLine;
 
-            return result;
+            // Indent the lines correctly
+            var indent = 0;
+            foreach (string line in lines.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
+            {
+                if (line == String.Empty) continue;
+
+                var indentation = String.Empty;
+                for (int i = 0; i < indent; i++)
+                    indentation += '\t';
+
+                result += indentation + line + Environment.NewLine;
+                if (line.Contains("group")) indent++;
+            }
+
+            return result.TrimEnd('\r', '\n'); ;
         }
     }
 }

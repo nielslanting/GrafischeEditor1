@@ -45,5 +45,15 @@ namespace GrafischeEditor1
 
             return stack.ToList();
         }
+
+        public static string FiguresToString(List<Figure> figures)
+        {
+            string result = String.Empty;
+
+            foreach (Figure figure in figures)
+                result += figure.ToString() + Environment.NewLine;
+
+            return result;
+        }
     }
 }

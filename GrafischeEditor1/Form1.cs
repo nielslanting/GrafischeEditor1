@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -242,5 +243,28 @@ namespace GrafischeEditor1
             if (this.toolState == ToolState.Ellipsis)
                 this.buttonEllipsis.BackColor = Color.Green;
         }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog.ShowDialog();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.ShowDialog();
+        }
+
+        private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            string name = saveFileDialog.FileName;
+            File.WriteAllText(name, Parser.FiguresToString(this.Figures));
+        }
+
+        private void openFileDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            string name = openFileDialog.FileName;
+            this.Figures = Parser.StringToFigures(File.ReadAllText(name));
+        }
+
     }
 }

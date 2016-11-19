@@ -33,5 +33,16 @@ namespace GrafischeEditor1
 
             return new Group(0, 0, new List<Figure>(count));
         }
+
+        public override string ToString()
+        {
+            var result = String.Empty;
+            result += String.Format("group {0}", this.Figures.Count) + Environment.NewLine;
+
+            foreach (Figure figure in this.Figures)
+                result += figure.ToString();
+
+            return result;
+        }
     }
 }

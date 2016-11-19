@@ -45,5 +45,10 @@ namespace GrafischeEditor1
 
             return new Ellipsis(x, y, w, h);
         }
+
+        public override string ToString()
+        {
+            return String.Format("ellipse {0} {1} {2} {3}", this.X, this.Y, this.Width, this.Height);
+        }
     }
 }

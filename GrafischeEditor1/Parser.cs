@@ -12,8 +12,9 @@ namespace GrafischeEditor1
         {
             Stack<Figure> stack = new Stack<Figure>();
             
-            foreach(string line in input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
+            foreach(string raw in input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
             {
+                string line = raw.Trim().Trim('\t');
                 Figure lastFigure = stack.Count > 0 ? stack.Peek() : null;
 
                 // Get the active group
@@ -28,10 +29,10 @@ namespace GrafischeEditor1
                 if (line.Contains("group"))
                     figure = Group.FromString(line);
 
-                if (line.Contains("ellipse"))
+                else if (line.Contains("ellipse"))
                     figure = Ellipsis.FromString(line);
 
-                if (line.Contains("rectangle"))
+                else if (line.Contains("rectangle"))
                     figure = Square.FromString(line);
 
                 if (figure != null)
@@ -46,18 +47,6 @@ namespace GrafischeEditor1
             return stack.ToList();
         }
 
-        private string fixIndentation(string input)
-        {
-            string result = String.Empty;
-            var indent = 0;
-
-            foreach (string line in result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
-            {
-
-            }
-
-            return result;
-        }
         public static string FiguresToString(List<Figure> figures)
         {
             string result = String.Empty;

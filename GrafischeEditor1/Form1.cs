@@ -39,11 +39,11 @@ namespace GrafischeEditor1
 
             try
             {
-                if (drawn != null)
-                    drawn.Draw(g);
-
                 foreach (Figure figure in this.Figures)
                     figure.Draw(g);
+
+                if (drawn != null)
+                    drawn.Draw(g);
             }
             catch { }
 
@@ -212,8 +212,6 @@ namespace GrafischeEditor1
             this.toolState = ToolState.Ellipsis;
             this.handleToolChange();
         }
-
-
 
         private void handleToolChange()
         {

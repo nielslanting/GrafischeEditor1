@@ -10,8 +10,31 @@ namespace GrafischeEditor1
 {
     public class Square : Figure
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
+        private int _width, _height;
+
+        public int Width {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                if (value < 0) this.X += value;
+                _width = Math.Abs(value);
+            }
+        }
+
+        public int Height {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (value < 0) this.Y += value;              
+                _height = Math.Abs(value);
+            }
+        }
 
         public Square(int x, int y, int width, int height) : base(x, y)
         {

@@ -10,8 +10,31 @@ namespace GrafischeEditor1
 {
     public class Ellipsis : Figure
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int Width
+        {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                if (value < 0) this.X += value;
+                _width = Math.Abs(value);
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (value < 0) this.Y += value;
+                _height = Math.Abs(value);
+            }
+        }
 
         public Ellipsis(int x, int y, int width, int height) : base(x, y)
         {
@@ -27,7 +50,7 @@ namespace GrafischeEditor1
             var rectangle = new System.Drawing.Rectangle(this.X, this.Y, this.Width, this.Height);
 
             g.FillEllipse(brush, rectangle);
-            if (this.Selected) g.DrawEllipse(pen, rectangle);
+            if (this.Selected) g.DrawRectangle(pen, rectangle);
         }
 
         public static Ellipsis FromString(string input)

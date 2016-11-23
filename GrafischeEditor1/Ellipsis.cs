@@ -10,6 +10,8 @@ namespace GrafischeEditor1
 {
     public class Ellipsis : Figure
     {
+        private int _width, _height;
+
         public int Width
         {
             get

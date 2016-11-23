@@ -259,5 +259,14 @@ namespace GrafischeEditor1
             this.Figures = Parser.StringToFigures(File.ReadAllText(name));
         }
 
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

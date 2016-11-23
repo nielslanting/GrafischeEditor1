@@ -10,6 +10,8 @@ namespace GrafischeEditor1
 {    
     public class Group : Figure
     {
+
+
         public List<Figure> Figures { get; set; }
 
         public Group(int x, int y, List<Figure> figures) : base(x, y)
@@ -18,9 +20,13 @@ namespace GrafischeEditor1
         }
 
         public override void Draw(Graphics g)
-        {
+        {           
             foreach (Figure figure in this.Figures)
+            {
                 figure.Draw(g);
+            }
+
+            Figure.DrawSelection(g, this);
         }
 
         public static Group FromString(string input)

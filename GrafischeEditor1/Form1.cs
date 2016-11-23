@@ -61,7 +61,7 @@ namespace GrafischeEditor1
                 case ToolState.Selection:
                     bool found = false;
 
-                    foreach (Figure figure in this.Figures)
+                    foreach (Figure figure in this.Figures.AsEnumerable().Reverse())
                     {
                         if (figure.GetType() == typeof(Square))
                         {

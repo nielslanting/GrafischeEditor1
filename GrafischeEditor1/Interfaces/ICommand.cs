@@ -8,7 +8,7 @@ namespace GrafischeEditor1
 {
     public interface ICommand<T>
     {
-        T Execute(T args);
-        T Undo(T args);
+        T Execute();
+        T Undo();
     }
 }

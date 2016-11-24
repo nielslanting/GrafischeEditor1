@@ -40,11 +40,14 @@
             this.toolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.panel1 = new GrafischeEditor1.Display();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.listBoxFigures = new System.Windows.Forms.ListBox();
+            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new GrafischeEditor1.Display();
+            this.buttonCreateGroup = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +55,7 @@
             // 
             this.buttonSelect.Location = new System.Drawing.Point(739, 27);
             this.buttonSelect.Name = "buttonSelect";
-            this.buttonSelect.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelect.Size = new System.Drawing.Size(182, 23);
             this.buttonSelect.TabIndex = 1;
             this.buttonSelect.Text = "Select";
             this.buttonSelect.UseVisualStyleBackColor = true;
@@ -62,7 +65,7 @@
             // 
             this.buttonMove.Location = new System.Drawing.Point(739, 57);
             this.buttonMove.Name = "buttonMove";
-            this.buttonMove.Size = new System.Drawing.Size(75, 23);
+            this.buttonMove.Size = new System.Drawing.Size(182, 23);
             this.buttonMove.TabIndex = 2;
             this.buttonMove.Text = "Move";
             this.buttonMove.UseVisualStyleBackColor = true;
@@ -72,7 +75,7 @@
             // 
             this.buttonRectangle.Location = new System.Drawing.Point(739, 115);
             this.buttonRectangle.Name = "buttonRectangle";
-            this.buttonRectangle.Size = new System.Drawing.Size(75, 23);
+            this.buttonRectangle.Size = new System.Drawing.Size(182, 23);
             this.buttonRectangle.TabIndex = 3;
             this.buttonRectangle.Text = "Rectangle";
             this.buttonRectangle.UseVisualStyleBackColor = true;
@@ -82,7 +85,7 @@
             // 
             this.buttonEllipsis.Location = new System.Drawing.Point(739, 144);
             this.buttonEllipsis.Name = "buttonEllipsis";
-            this.buttonEllipsis.Size = new System.Drawing.Size(75, 23);
+            this.buttonEllipsis.Size = new System.Drawing.Size(182, 23);
             this.buttonEllipsis.TabIndex = 4;
             this.buttonEllipsis.Text = "Ellipsis";
             this.buttonEllipsis.UseVisualStyleBackColor = true;
@@ -107,7 +110,7 @@
             // 
             this.buttonResize.Location = new System.Drawing.Point(739, 86);
             this.buttonResize.Name = "buttonResize";
-            this.buttonResize.Size = new System.Drawing.Size(75, 23);
+            this.buttonResize.Size = new System.Drawing.Size(182, 23);
             this.buttonResize.TabIndex = 6;
             this.buttonResize.Text = "Resize";
             this.buttonResize.UseVisualStyleBackColor = true;
@@ -121,7 +124,7 @@
             this.redoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(826, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(933, 24);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -148,32 +151,6 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            this.saveFileDialog.Tag = ".txt";
-            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
-            // 
-            // openFileDialog
-            // 
-            this.openFileDialog.DefaultExt = "txt";
-            this.openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            this.openFileDialog.Tag = ".txt";
-            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
-            // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(12, 27);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(721, 452);
-            this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
-            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
-            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
-            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
-            // 
             // undoToolStripMenuItem
             // 
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
@@ -188,11 +165,64 @@
             this.redoToolStripMenuItem.Text = "Redo";
             this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            this.saveFileDialog.Tag = ".txt";
+            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.DefaultExt = "txt";
+            this.openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            this.openFileDialog.Tag = ".txt";
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
+            // 
+            // listBoxFigures
+            // 
+            this.listBoxFigures.FormattingEnabled = true;
+            this.listBoxFigures.Location = new System.Drawing.Point(739, 176);
+            this.listBoxFigures.Name = "listBoxFigures";
+            this.listBoxFigures.Size = new System.Drawing.Size(182, 277);
+            this.listBoxFigures.TabIndex = 8;
+            this.listBoxFigures.SelectedValueChanged += new System.EventHandler(this.listBoxFigures_SelectedValueChanged);
+            // 
+            // timerUpdate
+            // 
+            this.timerUpdate.Enabled = true;
+            this.timerUpdate.Interval = 1000;
+            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Location = new System.Drawing.Point(12, 27);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(721, 452);
+            this.panel1.TabIndex = 0;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
+            // 
+            // buttonCreateGroup
+            // 
+            this.buttonCreateGroup.Location = new System.Drawing.Point(739, 456);
+            this.buttonCreateGroup.Name = "buttonCreateGroup";
+            this.buttonCreateGroup.Size = new System.Drawing.Size(182, 23);
+            this.buttonCreateGroup.TabIndex = 9;
+            this.buttonCreateGroup.Text = "Create group";
+            this.buttonCreateGroup.UseVisualStyleBackColor = true;
+            this.buttonCreateGroup.Click += new System.EventHandler(this.buttonCreateGroup_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(826, 532);
+            this.ClientSize = new System.Drawing.Size(933, 532);
+            this.Controls.Add(this.buttonCreateGroup);
+            this.Controls.Add(this.listBoxFigures);
             this.Controls.Add(this.buttonResize);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonEllipsis);
@@ -229,6 +259,9 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
+        private System.Windows.Forms.ListBox listBoxFigures;
+        private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.Button buttonCreateGroup;
     }
 }
 

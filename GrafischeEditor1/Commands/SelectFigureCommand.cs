@@ -33,7 +33,8 @@ namespace GrafischeEditor1.Commands
             foreach (var f in this.Figures) f.Selected = false;
 
             // Select the selected figure
-            this.Figures.Find(x => x == this.FigureToSelect).Selected = true;
+            var fig = this.Figures.Find(x => x == this.FigureToSelect);
+            if (fig != null) fig.Selected = true;
 
             return this.Figures;
         }

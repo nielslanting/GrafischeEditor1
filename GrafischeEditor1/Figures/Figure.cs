@@ -14,7 +14,7 @@ namespace GrafischeEditor1
 
         private int _width, _height;
 
-        public int Width
+        public virtual int Width
         {
             get
             {
@@ -27,7 +27,7 @@ namespace GrafischeEditor1
             }
         }
 
-        public int Height
+        public virtual int Height
         {
             get
             {
@@ -40,7 +40,7 @@ namespace GrafischeEditor1
             }
         }
 
-        public bool Selected { get; set; } = false;
+        public virtual bool Selected { get; set; } = false;
 
         protected Figure(int x, int y)
         {
@@ -49,6 +49,7 @@ namespace GrafischeEditor1
         }
 
         public abstract void Draw(Graphics g);
+        public abstract void Select(int x, int y);
 
         public static void DrawSelection(Graphics g, Figure f)
         {

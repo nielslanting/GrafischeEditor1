@@ -17,7 +17,8 @@ namespace GrafischeEditor1
     public partial class Form1 : Form
     {
         public UndoRedoStack<List<Figure>> FiguresStack;
-        public List<Figure> Figures { get; set; } 
+
+        public List<Figure> Figures { get; set; }
 
         private MouseState mouseState;
         private ToolState toolState;
@@ -64,8 +65,10 @@ namespace GrafischeEditor1
             switch (toolState)
             {
                 case ToolState.Selection:
-                    var selectedFigure = SelectionTool.FindSelected(e.X, e.Y, this.Figures);
-                    this.Figures = this.FiguresStack.Execute(new SelectFigureCommand(this.Figures, selectedFigure), this.Figures);
+                    foreach (var fig in this.Figures) fig.Select(e.X, e.Y);
+
+                    //var selectedFigure = SelectionTool.FindSelected(e.X, e.Y, this.Figures);
+                    //this.Figures = this.FiguresStack.Execute(new SelectFigureCommand(this.Figures, selectedFigure), this.Figures);
                     break;
                 case ToolState.Resize:
                     this.Figures = this.FiguresStack.Execute(new ResizeFigureCommand(e.X, e.Y, this.Figures), this.Figures);
@@ -228,6 +231,67 @@ namespace GrafischeEditor1
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Figures = this.FiguresStack.Redo(this.Figures);
+        }
+
+        private void timerUpdate_Tick(object sender, EventArgs e)
+        {
+            var items = new List<string>();
+            foreach (Figure f in this.Figures)
+            {
+                if(f.ToString().Contains(Environment.NewLine))
+                    items.AddRange(f.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
+                else
+                    items.Add(f.ToString());
+            }              
+
+            bool changed = items.Count != this.listBoxFigures.Items.Count;
+
+            if(changed == false)
+            {
+                for (var i = 0; i < this.listBoxFigures.Items.Count; i++)
+                {
+                    var item = this.listBoxFigures.Items[i];
+                    if (item.ToString() != items[i])
+                    {
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (changed == false) return;
+
+            this.listBoxFigures.Items.Clear();
+            foreach(var item in items)
+            {
+                this.listBoxFigures.Items.Add(item);
+            }
+        }
+
+        private void listBoxFigures_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var selected = listBoxFigures.SelectedItem.ToString();
+
+            var lookup = Parser.StringToFigures(selected).FirstOrDefault();
+            if (lookup == null) return;
+
+            var selectedFigure = this.Figures.Where(x =>
+                x.Height == lookup.Height &&
+                x.Width == lookup.Width &&
+                x.X == lookup.X &&
+                x.Y == lookup.Y
+            ).FirstOrDefault();
+
+            if (selectedFigure == null) return;
+
+            this.Figures = this.FiguresStack.Execute(new SelectFigureCommand(this.Figures, selectedFigure), this.Figures);
+        }
+
+        private void buttonCreateGroup_Click(object sender, EventArgs e)
+        {
+            Square s = new Square(50, 50, 100, 100);
+            Group g = new Group(0, 0, new List<Figure> { s });
+
         }
     }
 }

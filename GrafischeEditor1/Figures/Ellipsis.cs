@@ -10,7 +10,6 @@ namespace GrafischeEditor1
 {
     public class Ellipsis : Figure
     {
-
         public Ellipsis(int x, int y, int width, int height) : base(x, y)
         {
             this.Width = width;
@@ -24,6 +23,13 @@ namespace GrafischeEditor1
             g.FillEllipse(brush, rectangle);
 
             Figure.DrawSelection(g, this);
+        }
+
+        public override void Select(int x, int y)
+        {
+            this.Selected = false;
+            if (x >= this.X && x <= (this.X + this.Width) && y >= this.Y && y <= (this.Y + this.Height))
+                this.Selected = true;
         }
 
         public static Ellipsis FromString(string input)

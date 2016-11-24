@@ -25,6 +25,13 @@ namespace GrafischeEditor1
             Figure.DrawSelection(g, this);
         }
 
+        public override void Select(int x, int y)
+        {
+            this.Selected = false;
+            if (x >= this.X && x <= (this.X + this.Width) && y >= this.Y && y <= (this.Y + this.Height))
+                this.Selected = true;
+        }
+
         public static Square FromString(string input)
         {
             Regex r = new Regex("rectangle [0-9]+ [0-9]+ [0-9]+ [0-9]+");

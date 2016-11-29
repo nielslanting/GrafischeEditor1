@@ -24,8 +24,6 @@ namespace GrafischeEditor1
         private MouseState mouseState;
         private IToolState toolState;
 
-        //private Figure drawn = null;
-
         public Form1()
         {
             InitializeComponent();
@@ -40,6 +38,7 @@ namespace GrafischeEditor1
             handleToolChange();
         }
 
+        #region DrawMethods
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -65,19 +64,24 @@ namespace GrafischeEditor1
 
         }
 
+        private void timerDraw_Tick(object sender, EventArgs e)
+        {
+            this.panel1.Refresh();
+        }
+        #endregion
+
+        #region MouseMethods
         private void mouseState_Changed(object sender)
         {
             this.label1.Text = sender.ToString();
         }
-
-
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
         {
             mouseState.SX = e.X;
             mouseState.SY = e.Y;
 
-            this.toolState.MouseClick(this.Figures, mouseState);
+            this.toolState.MouseClick(this.Figures, this.FiguresStack, mouseState);
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -86,7 +90,7 @@ namespace GrafischeEditor1
             mouseState.SY = e.Y;
             mouseState.Pressed = true;
 
-            this.toolState.MouseDown(this.Figures, mouseState);
+            this.toolState.MouseDown(this.Figures, this.FiguresStack, mouseState);
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -94,20 +98,17 @@ namespace GrafischeEditor1
             mouseState.EX = e.X;
             mouseState.EY = e.Y;
 
-            this.toolState.MouseMove(this.Figures, mouseState);
+            this.toolState.MouseMove(this.Figures, this.FiguresStack, mouseState);
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
-            this.toolState.MouseUp(this.Figures, mouseState);
+            this.toolState.MouseUp(this.Figures, this.FiguresStack, mouseState);
             mouseState.Reset();
         }
+        #endregion
 
-        private void timerDraw_Tick(object sender, EventArgs e)
-        {
-            this.panel1.Refresh();
-        }
-
+        #region ToolMethods
         private void buttonSelect_Click(object sender, EventArgs e)
         {
             this.toolState = new SelectionTool();
@@ -162,7 +163,9 @@ namespace GrafischeEditor1
             if (this.toolState is EllipsisTool)
                 this.buttonEllipsis.BackColor = Color.Green;
         }
+        #endregion
 
+        #region IOMethods
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialog.ShowDialog();
@@ -196,7 +199,9 @@ namespace GrafischeEditor1
 
             this.Figures = this.FiguresStack.Execute(new SetFiguresCommand(this.Figures, figures), this.Figures);
         }
+        #endregion
 
+        #region UndoRedoMethods
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Figures = this.FiguresStack.Undo(this.Figures);
@@ -206,7 +211,9 @@ namespace GrafischeEditor1
         {
             this.Figures = this.FiguresStack.Redo(this.Figures);
         }
+        #endregion
 
+        #region TreeViewMethods
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
             var items = new List<string>();
@@ -244,7 +251,7 @@ namespace GrafischeEditor1
 
         private void listBoxFigures_SelectedValueChanged(object sender, EventArgs e)
         {
-            var selected = listBoxFigures.SelectedItem.ToString();
+            /*var selected = listBoxFigures.SelectedItem.ToString();
 
             var lookup = Parser.StringToFigures(selected).FirstOrDefault();
             if (lookup == null) return;
@@ -256,16 +263,16 @@ namespace GrafischeEditor1
                 x.Y == lookup.Y
             ).FirstOrDefault();
 
-            if (selectedFigure == null) return;
+            if (selectedFigure == null) return;*/
 
-            this.Figures = this.FiguresStack.Execute(new SelectFigureCommand(this.Figures, selectedFigure), this.Figures);
+            //this.Figures = this.FiguresStack.Execute(new SelectFigureCommand(this.Figures, selectedFigure), this.Figures);
         }
+        #endregion
 
         private void buttonCreateGroup_Click(object sender, EventArgs e)
         {
             Square s = new Square(50, 50, 100, 100);
             Group g = new Group(0, 0, new List<Figure> { s });
-
         }
     }
 }

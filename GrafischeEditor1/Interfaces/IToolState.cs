@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafischeEditor1.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,9 @@ namespace GrafischeEditor1.Interfaces
 {
     public interface IToolState
     {
-        void MouseClick(List<Figure> figures, MouseState mouseState);
-        void MouseDown(List<Figure> figures, MouseState mouseState);
-        void MouseMove(List<Figure> figures, MouseState mouseState);
-        void MouseUp(List<Figure> figures, MouseState mouseState);
+        void MouseClick(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
+        void MouseDown(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
+        void MouseMove(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
+        void MouseUp(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
     }
 }

@@ -1,4 +1,6 @@
-﻿using GrafischeEditor1.Interfaces;
+﻿using GrafischeEditor1.Commands;
+using GrafischeEditor1.Helpers;
+using GrafischeEditor1.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,22 +23,23 @@ namespace GrafischeEditor1.Tools
             return null;
         }
 
-        public void MouseClick(List<Figure> figures, MouseState mouseState)
+        public void MouseClick(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
             Figure selectedFigure = GetSelectedFigure(figures);
             if (selectedFigure == null) return;
-            selectedFigure.Move(mouseState.SX, mouseState.SY);
+
+            figures = figuresStack.Execute(new MoveFigureCommand(mouseState.SX, mouseState.SY, figures, selectedFigure), figures);
         }
 
-        public void MouseDown(List<Figure> figures, MouseState mouseState)
+        public void MouseDown(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseMove(List<Figure> figures, MouseState mouseState)
+        public void MouseMove(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseUp(List<Figure> figures, MouseState mouseState)
+        public void MouseUp(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
         }
     }

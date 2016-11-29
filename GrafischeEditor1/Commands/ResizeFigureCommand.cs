@@ -10,45 +10,48 @@ namespace GrafischeEditor1.Commands
     class ResizeFigureCommand : ICommand<List<Figure>>
     {
         List<Figure> Figures;
+        Figure SelectedFigure;
         int X = 0, Y = 0;
-        int oldWidth = 0, oldHeight = 0;
-        Figure oldFigure = null;
+        int oldWidth = 0, oldHeight = 0, oldX = 0, oldY = 0;
 
         public ResizeFigureCommand()
         {
             this.Figures = new List<Figure>();
         }
 
-        public ResizeFigureCommand(int x, int y, List<Figure> figures)
+        public ResizeFigureCommand(int x, int y, List<Figure> figures, Figure selectedFigure)
         {
             this.Figures = figures;
+            this.SelectedFigure = selectedFigure;
             this.X = x;
             this.Y = y;
         }
 
         public List<Figure> Execute()
         {
-            var figure = this.Figures.Find(x => x.Selected == true);
-            if (this.oldFigure != null) figure = this.oldFigure;
-            if (figure == null) return this.Figures;
+            if (SelectedFigure == null) return this.Figures;
 
-            int newWidth = this.X - figure.X;
-            int newHeight = this.Y - figure.Y;
+            this.oldX = this.SelectedFigure.X;
+            this.oldY = this.SelectedFigure.Y;
 
-            this.oldFigure = figure;
-            this.oldWidth = figure.Width;
-            this.oldHeight = figure.Height;
+            int newWidth = this.X - this.SelectedFigure.X;
+            int newHeight = this.Y - this.SelectedFigure.Y;
 
-            figure.Width = newWidth;
-            figure.Height = newHeight;
+            this.oldWidth = this.SelectedFigure.Width;
+            this.oldHeight = this.SelectedFigure.Height;
+
+            this.SelectedFigure.Width = newWidth;
+            this.SelectedFigure.Height = newHeight;
 
             return this.Figures;
         }
 
         public List<Figure> Undo()
-        {      
-            this.oldFigure.Width = this.oldWidth;
-            this.oldFigure.Height = this.oldHeight;
+        {
+            this.SelectedFigure.X = this.oldX;
+            this.SelectedFigure.Y = this.oldY;
+            this.SelectedFigure.Width = this.oldWidth;
+            this.SelectedFigure.Height = this.oldHeight;
 
             return this.Figures;
         }

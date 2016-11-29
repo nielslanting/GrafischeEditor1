@@ -10,31 +10,44 @@ namespace GrafischeEditor1.Commands
     class SelectFigureCommand : ICommand<List<Figure>>
     {
         List<Figure> Figures;
-        Figure OldFigureToSelect;
-        Figure FigureToSelect;
+        Figure OldFigure;
+        int X = 0;
+        int Y = 0;
 
         public SelectFigureCommand()
         {
             this.Figures = new List<Figure>();
-            this.OldFigureToSelect = null;
-            this.FigureToSelect = null;
         }
 
-        public SelectFigureCommand(List<Figure> figures, Figure fts)
+        public SelectFigureCommand(int x, int y, List<Figure> figures)
         {
             this.Figures = figures;
-            this.OldFigureToSelect = figures.Where(x => x.Selected == true).FirstOrDefault();
-            this.FigureToSelect = fts;
+            this.X = x;
+            this.Y = y;
         }
 
         public List<Figure> Execute()
         {
-            // Unselect all other figures
-            foreach (var f in this.Figures) f.Selected = false;
+            // Save to old selected figure
+            foreach(Figure figure in this.Figures)
+            {
+                var selected = figure.GetSelected();
+                if (selected != null)
+                {
+                    this.OldFigure = selected;
+                    break;
+                }
+            }
 
-            // Select the selected figure
-            var fig = this.Figures.Find(x => x == this.FigureToSelect);
-            if (fig != null) fig.Selected = true;
+            // Select the new figure
+            var reversedList = new List<Figure>(this.Figures);
+            reversedList.Reverse();
+
+            foreach (var f in reversedList)
+            {
+                f.Selected = false;
+                if (f.Select(this.X, this.Y) != null) break;
+            }
 
             return this.Figures;
         }
@@ -44,10 +57,11 @@ namespace GrafischeEditor1.Commands
             // Unselect all other figures
             foreach (var f in this.Figures) f.Selected = false;
 
-            if (this.OldFigureToSelect == null) return this.Figures;
+            if (this.OldFigure == null) return this.Figures;
 
             // Select the selected figure
-            this.Figures.Find(x => x == this.OldFigureToSelect).Selected = true;
+            var foundFigure = this.Figures.Find(x => x == this.OldFigure);
+            if(foundFigure != null) foundFigure.Selected = true;
 
             return this.Figures;
         }

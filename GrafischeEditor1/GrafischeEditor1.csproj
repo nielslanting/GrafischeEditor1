@@ -49,7 +49,7 @@
     <Compile Include="Commands\ResizeFigureCommand.cs" />
     <Compile Include="Commands\SelectFigureCommand.cs" />
     <Compile Include="Commands\SetFiguresCommand.cs" />
-    <Compile Include="Commands\AddFiguresCommand.cs" />
+    <Compile Include="Commands\AddFigureCommand.cs" />
     <Compile Include="Commands\NullCommand.cs" />
     <Compile Include="Display.cs">
       <SubType>Component</SubType>

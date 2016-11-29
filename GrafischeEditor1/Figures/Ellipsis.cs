@@ -10,6 +10,33 @@ namespace GrafischeEditor1
 {
     public class Ellipsis : Figure
     {
+        private int _width, _height;
+        public override int Width
+        {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                if (value < 0) this.X += value;
+                _width = Math.Abs(value);
+            }
+        }
+
+        public override int Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (value < 0) this.Y += value;
+                _height = Math.Abs(value);
+            }
+        }
+
         public Ellipsis(int x, int y, int width, int height) : base(x, y)
         {
             this.Width = width;

@@ -44,7 +44,7 @@ namespace GrafischeEditor1
             }
         }
 
-        public new int Width
+        public override int Width
         {
             get
             {
@@ -64,17 +64,17 @@ namespace GrafischeEditor1
             }
         }
 
-        public new int Height
+        public override int Height
         {
             get
             {
                 if (this.Figures.Count <= 0) return 0;
-                if (this.Figures.Count == 1) return this.Figures[0].Width;
+                if (this.Figures.Count == 1) return this.Figures[0].Height;
 
-                var low = this.Figures.OrderBy(x => x.X + x.Height).FirstOrDefault();
+                var low = this.Figures.OrderBy(x => x.Y + x.Height).FirstOrDefault();
                 if (low == null) return 0;
 
-                var high = this.Figures.OrderBy(x => x.X + x.Height).LastOrDefault();
+                var high = this.Figures.OrderBy(x => x.Y + x.Height).LastOrDefault();
                 if (high == null) return 0;
 
                 return (high.Y + high.Height) - low.Y;

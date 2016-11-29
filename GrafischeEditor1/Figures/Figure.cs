@@ -12,33 +12,8 @@ namespace GrafischeEditor1
         public int X { get; set; } = 0;
         public int Y { get; set; } = 0;
 
-        private int _width, _height;
-
-        public virtual int Width
-        {
-            get
-            {
-                return _width;
-            }
-            set
-            {
-                if (value < 0) this.X += value;
-                _width = Math.Abs(value);
-            }
-        }
-
-        public virtual int Height
-        {
-            get
-            {
-                return _height;
-            }
-            set
-            {
-                if (value < 0) this.Y += value;
-                _height = Math.Abs(value);
-            }
-        }
+        public abstract int Width { get; set; }
+        public abstract int Height { get; set; }
 
         public virtual bool Selected { get; set; } = false;
 

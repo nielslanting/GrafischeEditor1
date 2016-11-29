@@ -1,4 +1,6 @@
-﻿using GrafischeEditor1.Interfaces;
+﻿using GrafischeEditor1.Commands;
+using GrafischeEditor1.Helpers;
+using GrafischeEditor1.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,25 +14,28 @@ namespace GrafischeEditor1.Tools
     {
         public Figure Drawn { get; set; }
 
-        public void MouseClick(List<Figure> figures, MouseState mouseState)
+        public void MouseClick(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseDown(List<Figure> figures, MouseState mouseState)
+        public void MouseDown(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
             this.Drawn = new Ellipsis(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
         }
 
-        public void MouseMove(List<Figure> figures, MouseState mouseState)
+        public void MouseMove(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
             if (!mouseState.Pressed) return;
             this.Drawn = new Ellipsis(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
         }
 
-        public void MouseUp(List<Figure> figures, MouseState mouseState)
+        public void MouseUp(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
         {
             if (this.Drawn != null)
-                figures.Add(this.Drawn);
+            {
+                figures = figuresStack.Execute(new AddFigureCommand(this.Drawn, figures), figures);
+                this.Drawn = null;
+            }
         }
     }
 }

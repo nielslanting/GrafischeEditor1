@@ -8,11 +8,29 @@ using System.Windows.Forms;
 
 namespace GrafischeEditor1.Tools
 {
-    public class SelectionTool : IToolState
+    public class ResizeTool : IToolState
     {
+        private Figure GetSelectedFigure(List<Figure> figures)
+        {
+            foreach (var fig in figures)
+            {
+                var f = fig.GetSelected();
+                if (f != null) return f;
+            }
+
+            return null;
+        }
+
         public void MouseClick(List<Figure> figures, MouseState mouseState)
         {
-            foreach (var fig in figures) fig.Select(mouseState.SX, mouseState.SY);
+            Figure selectedFigure = GetSelectedFigure(figures);
+            if (selectedFigure == null) return;
+
+            int nw = 0, nh = 0;
+            nw = mouseState.SX - selectedFigure.X;
+            nh = mouseState.SY - selectedFigure.Y;
+
+            selectedFigure.Resize(nw, nh);
         }
 
         public void MouseDown(List<Figure> figures, MouseState mouseState)

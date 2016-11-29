@@ -49,7 +49,30 @@ namespace GrafischeEditor1
         }
 
         public abstract void Draw(Graphics g);
-        public abstract void Select(int x, int y);
+
+        public abstract Figure Select(int x, int y);
+
+        public virtual Figure GetSelected()
+        {
+            if (this.Selected == true) return this;
+            return null;
+        }
+
+        public virtual void Move(int x, int y)
+        {
+            if (this.Selected == false) return;
+
+            this.X = x;
+            this.Y = y;
+        }
+
+        public virtual void Resize(int nw, int nh)
+        {
+            if (this.Selected == false) return;
+
+            this.Width = nw;
+            this.Height = nh;
+        }
 
         public static void DrawSelection(Graphics g, Figure f)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GrafischeEditor1
 {
-    class MouseState
+    public class MouseState
     {
         public event ChangedEventHandler Changed;
         public delegate void ChangedEventHandler(object sender);

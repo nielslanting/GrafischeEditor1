@@ -1,5 +1,6 @@
 ﻿using GrafischeEditor1.Commands;
 using GrafischeEditor1.Helpers;
+using GrafischeEditor1.Interfaces;
 using GrafischeEditor1.Tools;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,9 @@ namespace GrafischeEditor1
         public List<Figure> Figures { get; set; }
 
         private MouseState mouseState;
-        private ToolState toolState;
+        private IToolState toolState;
 
-        private Figure drawn = null;
+        //private Figure drawn = null;
 
         public Form1()
         {
@@ -35,7 +36,7 @@ namespace GrafischeEditor1
             mouseState = new MouseState();
             mouseState.Changed += mouseState_Changed;
 
-            toolState = ToolState.Rectangle;
+            toolState = new RectangleTool();
             handleToolChange();
         }
 
@@ -48,8 +49,17 @@ namespace GrafischeEditor1
                 foreach (Figure figure in this.Figures)
                     figure.Draw(g);
 
-                if (drawn != null)
-                    drawn.Draw(g);
+                if(this.toolState is RectangleTool)
+                {
+                    var preview = ((RectangleTool)this.toolState).Drawn;
+                    if (preview != null) preview.Draw(g);
+                }
+
+                if(this.toolState is EllipsisTool)
+                {
+                    var preview = ((EllipsisTool)this.toolState).Drawn;
+                    if (preview != null) preview.Draw(g);
+                }
             }
             catch { }
 
@@ -60,23 +70,14 @@ namespace GrafischeEditor1
             this.label1.Text = sender.ToString();
         }
 
+
+
         private void panel1_MouseClick(object sender, MouseEventArgs e)
         {
-            switch (toolState)
-            {
-                case ToolState.Selection:
-                    foreach (var fig in this.Figures) fig.Select(e.X, e.Y);
+            mouseState.SX = e.X;
+            mouseState.SY = e.Y;
 
-                    //var selectedFigure = SelectionTool.FindSelected(e.X, e.Y, this.Figures);
-                    //this.Figures = this.FiguresStack.Execute(new SelectFigureCommand(this.Figures, selectedFigure), this.Figures);
-                    break;
-                case ToolState.Resize:
-                    this.Figures = this.FiguresStack.Execute(new ResizeFigureCommand(e.X, e.Y, this.Figures), this.Figures);
-                    break;
-                case ToolState.Move:
-                    this.Figures = this.FiguresStack.Execute(new MoveFigureCommand(e.X, e.Y, this.Figures), this.Figures);
-                    break;
-            }
+            this.toolState.MouseClick(this.Figures, mouseState);
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -85,17 +86,7 @@ namespace GrafischeEditor1
             mouseState.SY = e.Y;
             mouseState.Pressed = true;
 
-            switch (toolState)
-            {
-                case ToolState.Rectangle:
-                    drawn = new Square(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
-                    break;
-                case ToolState.Ellipsis:
-                    drawn = new Ellipsis(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
-                    break;
-
-            }
-            
+            this.toolState.MouseDown(this.Figures, mouseState);
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -103,30 +94,12 @@ namespace GrafischeEditor1
             mouseState.EX = e.X;
             mouseState.EY = e.Y;
 
-            switch (toolState)
-            {
-                case ToolState.Rectangle:
-                    if (!mouseState.Pressed) return;
-
-
-                    drawn = new Square(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
-                    break;
-                case ToolState.Ellipsis:
-                    if (!mouseState.Pressed) return;
-
-                    drawn = new Ellipsis(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
-                    break;
-
-            }
-
+            this.toolState.MouseMove(this.Figures, mouseState);
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
-            if(drawn != null)
-                this.Figures = this.FiguresStack.Execute(new AddFiguresCommand(this.Figures, new List<Figure> { drawn }), this.Figures);
-
-            drawn = null;
+            this.toolState.MouseUp(this.Figures, mouseState);
             mouseState.Reset();
         }
 
@@ -137,31 +110,32 @@ namespace GrafischeEditor1
 
         private void buttonSelect_Click(object sender, EventArgs e)
         {
-            this.toolState = ToolState.Selection;
+            this.toolState = new SelectionTool();
+
             this.handleToolChange();
         }
 
         private void buttonMove_Click(object sender, EventArgs e)
         {
-            this.toolState = ToolState.Move;
+            this.toolState = new MoveTool();
             this.handleToolChange();
         }
 
         private void buttonResize_Click(object sender, EventArgs e)
         {
-            this.toolState = ToolState.Resize;
+            this.toolState = new ResizeTool();
             this.handleToolChange();
         }
 
         private void buttonRectangle_Click(object sender, EventArgs e)
         {
-            this.toolState = ToolState.Rectangle;
+            this.toolState = new RectangleTool();
             this.handleToolChange();
         }
 
         private void buttonEllipsis_Click(object sender, EventArgs e)
         {
-            this.toolState = ToolState.Ellipsis;
+            this.toolState = new EllipsisTool();
             this.handleToolChange();
         }
 
@@ -173,19 +147,19 @@ namespace GrafischeEditor1
             this.buttonRectangle.BackColor = SystemColors.Control;
             this.buttonEllipsis.BackColor = SystemColors.Control;
 
-            if(this.toolState == ToolState.Selection)
+            if (this.toolState is SelectionTool)
                 this.buttonSelect.BackColor = Color.Green;
 
-            if (this.toolState == ToolState.Move)
+            if (this.toolState is MoveTool)
                 this.buttonMove.BackColor = Color.Green;
 
-            if (this.toolState == ToolState.Resize)
+            if (this.toolState is ResizeTool)
                 this.buttonResize.BackColor = Color.Green;
 
-            if (this.toolState == ToolState.Rectangle)
+            if (this.toolState is RectangleTool)
                 this.buttonRectangle.BackColor = Color.Green;
 
-            if (this.toolState == ToolState.Ellipsis)
+            if (this.toolState is EllipsisTool)
                 this.buttonEllipsis.BackColor = Color.Green;
         }
 

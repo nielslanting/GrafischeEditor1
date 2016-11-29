@@ -10,6 +10,7 @@ namespace GrafischeEditor1.Commands
     class MoveFigureCommand : ICommand<List<Figure>>
     {
         List<Figure> Figures;
+        Figure SelectedFigure;
         int X = 0, Y = 0;
         int oldX = 0, oldY = 0;
 
@@ -18,34 +19,32 @@ namespace GrafischeEditor1.Commands
             this.Figures = new List<Figure>();
         }
 
-        public MoveFigureCommand(int x, int y, List<Figure> figures)
+        public MoveFigureCommand(int x, int y, List<Figure> figures, Figure selected)
         {
             this.Figures = figures;
+            this.SelectedFigure = selected;
             this.X = x;
             this.Y = y;
         }
 
         public List<Figure> Execute()
         {
-            var figure = this.Figures.Find(x => x.Selected == true);
-            if (figure == null) return this.Figures;
+            if (this.SelectedFigure == null) return this.Figures;
 
-            this.oldX = figure.X;
-            this.oldY = figure.Y;
+            this.oldX = this.SelectedFigure.X;
+            this.oldY = this.SelectedFigure.Y;
 
-            figure.X = this.X;
-            figure.Y = this.Y;
+
+            this.SelectedFigure.Move(this.X, this.Y);
 
             return this.Figures;
         }
 
         public List<Figure> Undo()
         {
-            var figure = this.Figures.Find(x => x.Selected == true);
-            if (figure == null) return this.Figures;
+            if (this.SelectedFigure == null) return this.Figures;
 
-            figure.X = this.oldX;
-            figure.Y = this.oldY;
+            this.SelectedFigure.Move(this.oldX, this.oldY);
 
             return this.Figures;
         }

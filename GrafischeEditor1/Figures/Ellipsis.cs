@@ -25,11 +25,16 @@ namespace GrafischeEditor1
             Figure.DrawSelection(g, this);
         }
 
-        public override void Select(int x, int y)
+        public override Figure Select(int x, int y)
         {
             this.Selected = false;
             if (x >= this.X && x <= (this.X + this.Width) && y >= this.Y && y <= (this.Y + this.Height))
+            {
                 this.Selected = true;
+                return this;
+            }
+
+            return null;
         }
 
         public static Ellipsis FromString(string input)

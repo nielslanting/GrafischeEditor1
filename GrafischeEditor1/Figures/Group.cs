@@ -100,7 +100,7 @@ namespace GrafischeEditor1
             Figure.DrawSelection(g, preview);
         }
 
-        public override void Select(int x, int y)
+        public override Figure Select(int x, int y)
         {
             this.Selected = false;
 
@@ -108,11 +108,50 @@ namespace GrafischeEditor1
             foreach (var fig in this.Figures)
             {
                 fig.Select(x, y);
-                if (fig.Selected == true) found = true;
+                if (fig.Selected == true) return fig;
             }
                        
             if (found == false && x >= this.X && x <= (this.X + this.Width) && y >= this.Y && y <= (this.Y + this.Height))
+            {
                 this.Selected = true;
+                return this;
+            }
+
+            return null;
+        }
+        
+        public override Figure GetSelected()
+        {
+            if (this.Selected == true) return this;
+
+            foreach(var fig in this.Figures)
+            {
+                if (fig.Selected == true) return fig;
+            }
+
+            return null;
+        }
+
+        public override void Move(int x, int y)
+        {
+            if(this.Selected)
+            {
+                var difx = x - this.X;
+                var dify = y - this.Y;
+
+                foreach (var fig in this.Figures)
+                {
+                    fig.X += difx;
+                    fig.Y += dify;
+                }
+            }
+            else
+            {
+                foreach (var fig in this.Figures)
+                {
+                    fig.Move(x, y);
+                }
+            }
         }
 
         public static Group FromString(string input)

@@ -154,6 +154,32 @@ namespace GrafischeEditor1
             }
         }
 
+        public override void Resize(int nw, int nh)
+        {
+            var x = this.X;
+            var y = this.Y;
+
+            var h = (double)(this.Height);
+            var w = (double)(this.Width);
+
+            var pnw = nw - this.X;
+            var pnh = nh - this.Y;
+
+            double wratio = (double)pnw / w;
+            double hratio = (double)pnh / h;
+
+            foreach (Figure f in this.Figures)
+            {
+                f.Width = (int)((double)f.Width * wratio);
+                f.Height = (int)((double)f.Height * hratio);
+
+                f.X = (int)(pnw * ((f.X - x) / w)) + x;
+                f.Y = (int)(pnh * ((f.Y - y) / h)) + y;
+            }
+
+            //base.Resize(nw, nh);
+        }
+
         public static Group FromString(string input)
         {
             Regex r = new Regex("group [0-9]+");

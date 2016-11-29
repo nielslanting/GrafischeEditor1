@@ -40,18 +40,22 @@ namespace GrafischeEditor1.Commands
             this.oldWidth = this.SelectedFigure.Width;
             this.oldHeight = this.SelectedFigure.Height;
 
-            this.SelectedFigure.Width = newWidth;
-            this.SelectedFigure.Height = newHeight;
+            //this.SelectedFigure.Width = newWidth;
+            //this.SelectedFigure.Height = newHeight;
+            this.SelectedFigure.Resize(newWidth, newHeight);
 
             return this.Figures;
         }
 
         public List<Figure> Undo()
         {
-            this.SelectedFigure.X = this.oldX;
+            /*this.SelectedFigure.X = this.oldX;
             this.SelectedFigure.Y = this.oldY;
             this.SelectedFigure.Width = this.oldWidth;
-            this.SelectedFigure.Height = this.oldHeight;
+            this.SelectedFigure.Height = this.oldHeight;*/
+
+            this.SelectedFigure.Move(this.oldX, this.oldY);
+            this.SelectedFigure.Resize(this.oldWidth, this.oldHeight);
 
             return this.Figures;
         }

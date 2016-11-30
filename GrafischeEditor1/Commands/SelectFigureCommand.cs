@@ -40,13 +40,14 @@ namespace GrafischeEditor1.Commands
             }
 
             // Select the new figure
+            var found = false;
             var reversedList = new List<Figure>(this.Figures);
             reversedList.Reverse();
 
             foreach (var f in reversedList)
             {
                 f.Selected = false;
-                if (f.Select(this.X, this.Y) != null) break;
+                if (!found && f.Select(this.X, this.Y) != null) found = true;
             }
 
             return this.Figures;

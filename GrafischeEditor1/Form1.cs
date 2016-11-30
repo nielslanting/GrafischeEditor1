@@ -18,8 +18,8 @@ namespace GrafischeEditor1
     public partial class Form1 : Form
     {
         public UndoRedoStack<Figure> FiguresStack;
-
         public Figure Figure { get; set; }
+        public Bitmap Painting { get; set; }
 
         private MouseState mouseState;
         private IToolState toolState;
@@ -28,6 +28,7 @@ namespace GrafischeEditor1
         {
             InitializeComponent();
 
+            this.Painting = new Bitmap(panel1.ClientSize.Width, panel1.ClientSize.Height);
             this.Figure = new Group(0, 0, new List<Figure>());
             this.FiguresStack = new UndoRedoStack<Figure>();
 
@@ -41,10 +42,15 @@ namespace GrafischeEditor1
         #region DrawMethods
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
+            //Graphics g = e.Graphics;
+            
 
+            // Paint the items
             try
             {
+                Graphics g = Graphics.FromImage(this.Painting);
+                g.Clear(Color.White);
+
                 this.Figure.Draw(g);
 
                 if(this.toolState is RectangleTool)
@@ -58,9 +64,10 @@ namespace GrafischeEditor1
                     var preview = ((EllipsisTool)this.toolState).Drawn;
                     if (preview != null) preview.Draw(g);
                 }
+
+                e.Graphics.DrawImage(this.Painting, Point.Empty);
             }
             catch { }
-
         }
 
         private void timerDraw_Tick(object sender, EventArgs e)
@@ -201,6 +208,26 @@ namespace GrafischeEditor1
 
             if(figure != null)
                 this.Figure = this.FiguresStack.Execute(new SetFiguresCommand(this.Figure, figure), this.Figure);
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            exportFileDialog.ShowDialog();
+        }
+
+        private void exportFileDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            var name = exportFileDialog.FileName;
+
+            try
+            {
+                this.Painting.Save(name);
+            }
+            catch(Exception er)
+            {
+                MessageBox.Show("The file could not be exported.");
+            }
+            
         }
         #endregion
 

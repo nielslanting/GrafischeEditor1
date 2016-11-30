@@ -34,14 +34,6 @@ namespace GrafischeEditor1.Commands
             this.oldX = this.SelectedFigure.X;
             this.oldY = this.SelectedFigure.Y;
 
-            // QUESTION: How do you get the property using a overriden get/setter without type checking?
-            // Should I implement A IFigure interface?
-            if(this.SelectedFigure is Group)
-            {
-                this.oldX = ((Group)this.SelectedFigure).X;
-                this.oldY = ((Group)this.SelectedFigure).Y;
-            }
-
             this.SelectedFigure.Move(this.X, this.Y);
 
             return this.Figures;

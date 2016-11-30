@@ -15,6 +15,13 @@ namespace GrafischeEditor1
         public abstract int Width { get; set; }
         public abstract int Height { get; set; }
 
+        public bool Visible { get; set; } = true;
+
+        public void ToggleVisibility()
+        {
+            this.Visible = !this.Visible;
+        }
+
         public virtual bool Selected { get; set; } = false;
 
         protected Figure(int x, int y)

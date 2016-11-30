@@ -45,6 +45,8 @@ namespace GrafischeEditor1
 
         public override void Draw(Graphics g)
         {
+            if (!this.Visible) return;
+
             var brush = new SolidBrush(Color.Blue);   
             var rectangle = new System.Drawing.Rectangle(this.X, this.Y, this.Width, this.Height);
             g.FillEllipse(brush, rectangle);

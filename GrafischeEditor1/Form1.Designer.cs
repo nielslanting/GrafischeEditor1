@@ -46,8 +46,9 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.listBoxFigures = new System.Windows.Forms.ListBox();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.panel1 = new GrafischeEditor1.Display();
             this.buttonCreateGroup = new System.Windows.Forms.Button();
+            this.checkedListBoxFigures = new System.Windows.Forms.CheckedListBox();
+            this.panel1 = new GrafischeEditor1.Display();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -183,7 +184,7 @@
             this.listBoxFigures.FormattingEnabled = true;
             this.listBoxFigures.Location = new System.Drawing.Point(739, 202);
             this.listBoxFigures.Name = "listBoxFigures";
-            this.listBoxFigures.Size = new System.Drawing.Size(182, 277);
+            this.listBoxFigures.Size = new System.Drawing.Size(182, 108);
             this.listBoxFigures.TabIndex = 8;
             this.listBoxFigures.SelectedValueChanged += new System.EventHandler(this.listBoxFigures_SelectedValueChanged);
             // 
@@ -192,6 +193,26 @@
             this.timerUpdate.Enabled = true;
             this.timerUpdate.Interval = 1000;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
+            // 
+            // buttonCreateGroup
+            // 
+            this.buttonCreateGroup.Location = new System.Drawing.Point(739, 173);
+            this.buttonCreateGroup.Name = "buttonCreateGroup";
+            this.buttonCreateGroup.Size = new System.Drawing.Size(182, 23);
+            this.buttonCreateGroup.TabIndex = 9;
+            this.buttonCreateGroup.Text = "Create group";
+            this.buttonCreateGroup.UseVisualStyleBackColor = true;
+            this.buttonCreateGroup.Click += new System.EventHandler(this.buttonCreateGroup_Click);
+            // 
+            // checkedListBoxFigures
+            // 
+            this.checkedListBoxFigures.FormattingEnabled = true;
+            this.checkedListBoxFigures.Location = new System.Drawing.Point(739, 325);
+            this.checkedListBoxFigures.Name = "checkedListBoxFigures";
+            this.checkedListBoxFigures.Size = new System.Drawing.Size(182, 154);
+            this.checkedListBoxFigures.TabIndex = 10;
+            this.checkedListBoxFigures.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxFigures_ItemCheck);
+            this.checkedListBoxFigures.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxFigures_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -206,21 +227,12 @@
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
-            // buttonCreateGroup
-            // 
-            this.buttonCreateGroup.Location = new System.Drawing.Point(739, 173);
-            this.buttonCreateGroup.Name = "buttonCreateGroup";
-            this.buttonCreateGroup.Size = new System.Drawing.Size(182, 23);
-            this.buttonCreateGroup.TabIndex = 9;
-            this.buttonCreateGroup.Text = "Create group";
-            this.buttonCreateGroup.UseVisualStyleBackColor = true;
-            this.buttonCreateGroup.Click += new System.EventHandler(this.buttonCreateGroup_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(933, 532);
+            this.Controls.Add(this.checkedListBoxFigures);
             this.Controls.Add(this.buttonCreateGroup);
             this.Controls.Add(this.listBoxFigures);
             this.Controls.Add(this.buttonResize);
@@ -262,6 +274,7 @@
         private System.Windows.Forms.ListBox listBoxFigures;
         private System.Windows.Forms.Timer timerUpdate;
         private System.Windows.Forms.Button buttonCreateGroup;
+        private System.Windows.Forms.CheckedListBox checkedListBoxFigures;
     }
 }
 

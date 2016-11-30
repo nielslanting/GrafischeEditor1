@@ -265,9 +265,11 @@ namespace GrafischeEditor1
                 }
 
                 this.listBoxFigures.Items.Clear();
+                this.checkedListBoxFigures.Items.Clear();
                 foreach (var item in items)
                 {
                     this.listBoxFigures.Items.Add(item);
+                    this.checkedListBoxFigures.Items.Add(item);
                 }
             }
         }
@@ -289,6 +291,20 @@ namespace GrafischeEditor1
             //Square s = new Square(50, 50, 100, 100);
             Group g = new Group(0, 0, new List<Figure>());
             ((Group)this.Figure).Figures.Add(g);
+        }
+
+        private void checkedListBoxFigures_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (checkedListBoxFigures.SelectedIndex >= 0 && checkedListBoxFigures.SelectedIndex <= this.Flat.Count)
+            {
+                var figureToSelect = this.Flat[checkedListBoxFigures.SelectedIndex];
+                this.Figure = this.FiguresStack.Execute(new SelectFigureCommand(figureToSelect, this.Figure), this.Figure);
+            }
+        }
+
+        private void checkedListBoxFigures_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            this.Flat[e.Index].ToggleVisibility();
         }
     }
 }

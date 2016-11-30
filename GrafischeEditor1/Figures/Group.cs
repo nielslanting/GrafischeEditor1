@@ -95,7 +95,9 @@ namespace GrafischeEditor1
         }
 
         public override void Draw(Graphics g)
-        {           
+        {
+            if (!this.Visible) return;
+
             foreach (Figure figure in this.Figures)
             {
                 figure.Draw(g);

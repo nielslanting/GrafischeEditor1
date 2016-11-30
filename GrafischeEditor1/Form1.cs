@@ -216,46 +216,66 @@ namespace GrafischeEditor1
         }
         #endregion
 
+        public List<Figure> Flat { get; set; }
         #region TreeViewMethods
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
             var items = new List<string>();
+            var flat = new List<Figure>();
 
-            items.AddRange(this.Figure.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
-            bool changed = items.Count != this.listBoxFigures.Items.Count;
+            var current = this.Figure;
 
-            if(changed == false)
+            while(current is Group)
             {
-                for (var i = 0; i < this.listBoxFigures.Items.Count; i++)
+                flat.Add(current);
+                items.Add("group " + ((Group)current).Figures.Count);
+
+                var changed = false;
+                foreach (Figure f in ((Group)current).Figures)
                 {
-                    var item = this.listBoxFigures.Items[i];
-                    if (item.ToString() != items[i])
+                    flat.Add(f);
+
+                    if (!(f is Group))
+                        items.Add(f.ToString());
+                    else
                     {
+                        
+                        current = f;
                         changed = true;
-                        break;
-                    }
+                    }                        
                 }
+
+                if (!changed) current = null;
             }
 
-            if (changed == false) return;
-
-            this.listBoxFigures.Items.Clear();
-            foreach(var item in items)
+            if(flat == null || this.Flat == null || !flat.SequenceEqual(this.Flat))
             {
-                this.listBoxFigures.Items.Add(item);
+                this.Flat = flat;
+                this.listBoxFigures.Items.Clear();
+                foreach (var item in items)
+                {
+                    this.listBoxFigures.Items.Add(item);
+                }
             }
         }
 
         private void listBoxFigures_SelectedValueChanged(object sender, EventArgs e)
         {
-
+            //this.Figure.Unselect();
+            if(listBoxFigures.SelectedIndex >= 0 && listBoxFigures.SelectedIndex <= this.Flat.Count)
+            {
+                var figureToSelect = this.Flat[listBoxFigures.SelectedIndex];
+                this.Figure = this.FiguresStack.Execute(new SelectFigureCommand(figureToSelect, this.Figure), this.Figure);
+            }
+                
         }
         #endregion
 
         private void buttonCreateGroup_Click(object sender, EventArgs e)
         {
-            Square s = new Square(50, 50, 100, 100);
-            Group g = new Group(0, 0, new List<Figure> { s });
+            //Square s = new Square(50, 50, 100, 100);
+            Group g = new Group(0, 0, new List<Figure>());
+            ((Group)this.Figure).Figures.Add(g);
         }
     }
 }

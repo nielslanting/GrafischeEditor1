@@ -181,7 +181,7 @@
             // listBoxFigures
             // 
             this.listBoxFigures.FormattingEnabled = true;
-            this.listBoxFigures.Location = new System.Drawing.Point(739, 176);
+            this.listBoxFigures.Location = new System.Drawing.Point(739, 202);
             this.listBoxFigures.Name = "listBoxFigures";
             this.listBoxFigures.Size = new System.Drawing.Size(182, 277);
             this.listBoxFigures.TabIndex = 8;
@@ -208,7 +208,7 @@
             // 
             // buttonCreateGroup
             // 
-            this.buttonCreateGroup.Location = new System.Drawing.Point(739, 456);
+            this.buttonCreateGroup.Location = new System.Drawing.Point(739, 173);
             this.buttonCreateGroup.Name = "buttonCreateGroup";
             this.buttonCreateGroup.Size = new System.Drawing.Size(182, 23);
             this.buttonCreateGroup.TabIndex = 9;

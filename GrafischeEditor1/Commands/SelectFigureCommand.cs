@@ -11,6 +11,7 @@ namespace GrafischeEditor1.Commands
     {
         Figure Figure;
         Figure OldFigure;
+        Figure ToSelect;
         int X = 0;
         int Y = 0;
 
@@ -25,12 +26,22 @@ namespace GrafischeEditor1.Commands
             this.Y = y;
         }
 
+        public SelectFigureCommand(Figure ToSelect, Figure figure)
+        {
+            this.Figure = figure;
+            this.ToSelect = ToSelect;
+        }
+
         public Figure Execute()
         {
             this.OldFigure = Figure.GetSelected();
 
             this.Figure.Unselect();
-            this.Figure.Select(this.X, this.Y);
+
+            if (this.ToSelect != null)
+                this.ToSelect.Select();
+            else
+                this.Figure.Select(this.X, this.Y);
 
             return this.Figure;
         }

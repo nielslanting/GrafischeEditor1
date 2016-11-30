@@ -56,10 +56,10 @@ namespace GrafischeEditor1
                 if (this.Figures.Count <= 0) return 0;
                 if (this.Figures.Count == 1) return this.Figures[0].Width;
 
-                var low = this.Figures.OrderBy(x => x.X + x.Width).FirstOrDefault();
+                var low = this.Figures.OrderBy(x => x.X).FirstOrDefault();
                 if (low == null) return 0;
 
-                var high = this.Figures.OrderBy(x => x.X + x.Height).LastOrDefault();
+                var high = this.Figures.OrderBy(x => x.X + x.Width).LastOrDefault();
                 if (high == null) return 0;
 
                 return (high.X + high.Width) - low.X;
@@ -76,7 +76,7 @@ namespace GrafischeEditor1
                 if (this.Figures.Count <= 0) return 0;
                 if (this.Figures.Count == 1) return this.Figures[0].Height;
 
-                var low = this.Figures.OrderBy(x => x.Y + x.Height).FirstOrDefault();
+                var low = this.Figures.OrderBy(x => x.Y).FirstOrDefault();
                 if (low == null) return 0;
 
                 var high = this.Figures.OrderBy(x => x.Y + x.Height).LastOrDefault();

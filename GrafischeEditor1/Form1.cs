@@ -178,7 +178,7 @@ namespace GrafischeEditor1
         private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             var name = saveFileDialog.FileName;
-            File.WriteAllText(name, Parser.FiguresToString(this.Figure));
+            File.WriteAllText(name, Parser.GroupToString((Group)this.Figure));
         }
 
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
@@ -264,33 +264,11 @@ namespace GrafischeEditor1
                     items.Add(prefix + f.ToString());
                 }
 
-                this.listBoxFigures.Items.Clear();
                 this.checkedListBoxFigures.Items.Clear();
                 foreach (var item in items)
-                {
-                    this.listBoxFigures.Items.Add(item);
                     this.checkedListBoxFigures.Items.Add(item);
-                }
-            }
-        }
-
-        private void listBoxFigures_SelectedValueChanged(object sender, EventArgs e)
-        {
-            //this.Figure.Unselect();
-            if(listBoxFigures.SelectedIndex >= 0 && listBoxFigures.SelectedIndex <= this.Flat.Count)
-            {
-                var figureToSelect = this.Flat[listBoxFigures.SelectedIndex];
-                this.Figure = this.FiguresStack.Execute(new SelectFigureCommand(figureToSelect, this.Figure), this.Figure);
-            }
                 
-        }
-        #endregion
-
-        private void buttonCreateGroup_Click(object sender, EventArgs e)
-        {
-            //Square s = new Square(50, 50, 100, 100);
-            Group g = new Group(0, 0, new List<Figure>());
-            ((Group)this.Figure).Figures.Add(g);
+            }
         }
 
         private void checkedListBoxFigures_SelectedIndexChanged(object sender, EventArgs e)
@@ -306,5 +284,16 @@ namespace GrafischeEditor1
         {
             this.Flat[e.Index].ToggleVisibility();
         }
+
+        #endregion
+
+        private void buttonCreateGroup_Click(object sender, EventArgs e)
+        {
+            //Square s = new Square(50, 50, 100, 100);
+            Group g = new Group(0, 0, new List<Figure>());
+            ((Group)this.Figure).Figures.Add(g);
+        }
+
+
     }
 }

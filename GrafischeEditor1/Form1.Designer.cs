@@ -44,7 +44,6 @@
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.listBoxFigures = new System.Windows.Forms.ListBox();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.buttonCreateGroup = new System.Windows.Forms.Button();
             this.checkedListBoxFigures = new System.Windows.Forms.CheckedListBox();
@@ -179,15 +178,6 @@
             this.openFileDialog.Tag = ".txt";
             this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
             // 
-            // listBoxFigures
-            // 
-            this.listBoxFigures.FormattingEnabled = true;
-            this.listBoxFigures.Location = new System.Drawing.Point(739, 202);
-            this.listBoxFigures.Name = "listBoxFigures";
-            this.listBoxFigures.Size = new System.Drawing.Size(182, 108);
-            this.listBoxFigures.TabIndex = 8;
-            this.listBoxFigures.SelectedValueChanged += new System.EventHandler(this.listBoxFigures_SelectedValueChanged);
-            // 
             // timerUpdate
             // 
             this.timerUpdate.Enabled = true;
@@ -207,15 +197,16 @@
             // checkedListBoxFigures
             // 
             this.checkedListBoxFigures.FormattingEnabled = true;
-            this.checkedListBoxFigures.Location = new System.Drawing.Point(739, 325);
+            this.checkedListBoxFigures.Location = new System.Drawing.Point(739, 205);
             this.checkedListBoxFigures.Name = "checkedListBoxFigures";
-            this.checkedListBoxFigures.Size = new System.Drawing.Size(182, 154);
+            this.checkedListBoxFigures.Size = new System.Drawing.Size(182, 274);
             this.checkedListBoxFigures.TabIndex = 10;
             this.checkedListBoxFigures.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxFigures_ItemCheck);
             this.checkedListBoxFigures.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxFigures_SelectedIndexChanged);
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(12, 27);
             this.panel1.Name = "panel1";
@@ -234,7 +225,6 @@
             this.ClientSize = new System.Drawing.Size(933, 532);
             this.Controls.Add(this.checkedListBoxFigures);
             this.Controls.Add(this.buttonCreateGroup);
-            this.Controls.Add(this.listBoxFigures);
             this.Controls.Add(this.buttonResize);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonEllipsis);
@@ -271,7 +261,6 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
-        private System.Windows.Forms.ListBox listBoxFigures;
         private System.Windows.Forms.Timer timerUpdate;
         private System.Windows.Forms.Button buttonCreateGroup;
         private System.Windows.Forms.CheckedListBox checkedListBoxFigures;

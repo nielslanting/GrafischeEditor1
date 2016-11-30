@@ -36,14 +36,18 @@ namespace GrafischeEditor1
                     figure = Square.FromString(line);
 
                 var last = groupStack.LastOrDefault();
-                if (last != null)
+
+                if(figure != null)
                 {
-                    last.Figures.Add(figure);
-                    if (last.Figures.Capacity == last.Figures.Count)
-                        groupStack.Remove(last);
-                }                
-                else
-                    root.Figures.Add(figure);
+                    if (last != null)
+                    {
+                        last.Figures.Add(figure);
+                        if (last.Figures.Capacity == last.Figures.Count)
+                            groupStack.Remove(last);
+                    }
+                    else
+                        root.Figures.Add(figure);
+                }
 
                 if (figure is Group) groupStack.Add((Group)figure);
             }
@@ -51,85 +55,49 @@ namespace GrafischeEditor1
             return root;
         }
 
-        /*public static Figure StringToFigures(string input)
+        public static string GroupToString(Group root)
         {
-            var stack = new List<Figure>();
-            
-            foreach(string raw in input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
-            {                
-                string line = raw.Trim().Trim('\t');
+            var result = String.Empty;
+            var flat = root.Enumerate();
 
-                if (line.Contains("ornament")) continue; // Skip ornaments for now
+            int indent = 0;
+            List<int> count = new List<int>();
 
-                Figure lastFigure = stack.Count > 0 ? stack.Last() : null;
+            foreach (Figure f in flat)
+            {
+                bool current = false;
 
-                // Get the active group
-                Group group = null;
-                if (lastFigure != null && lastFigure.GetType() == typeof(Group) 
-                    && ((Group)lastFigure).Figures.Capacity != ((Group)lastFigure).Figures.Count)               
-                    group = (Group)lastFigure;      
+                // Decrement group counter
+                if (count.Count > 0 && count.LastOrDefault() > 0)
+                    count[count.Count - 1]--;
 
-                Figure figure = null;
-
-                if (line.Contains("group"))
-                    figure = Group.FromString(line);
-
-                else if (line.Contains("ellipse"))
-                    figure = Ellipsis.FromString(line);
-
-                else if (line.Contains("rectangle"))
-                    figure = Square.FromString(line);
-
-                if (figure != null)
+                // Add counts if its a group
+                if (f is Group)
                 {
-                    if (group != null)
-                        group.Figures.Add(figure);
-                    else
-                        stack.Add(figure);
+                    current = true;
+                    indent++;
+                    count.Add(((Group)f).Figures.Count + 1);
                 }
+
+                // Remove count if its zero
+                if (count.Count > 0 && count.LastOrDefault() == 0)
+                {
+                    count.Remove(count.LastOrDefault());
+                    indent--;
+                }
+
+                // Prefix the items
+                string prefix = "";
+                var ind = indent;
+                if (current == true) ind--;
+                for (int i = 0; i < ind; i++)
+                    prefix += "  ";
+
+                // Add the items
+                result += prefix + f.ToString() + Environment.NewLine;
             }
 
-            var top = stack.FirstOrDefault();
-            if (top is Group)
-            {
-                var figures = stack.Skip(1);
-                foreach (Figure f in figures)
-                    ((Group)(top)).Figures.Add(f);
-            }
-            else
-            {
-                top = new Group(0, 0, stack);
-            }
-
-            return top;
-        }*/
-
-        public static string FiguresToString(Figure figure)
-        {
-            string result = String.Empty;
-
-            // Get all the lines
-            string lines = String.Empty;
-
-            lines = figure.ToString();
-            /*foreach (Figure figure in figures)
-                lines += figure.ToString() + Environment.NewLine;*/
-
-            // Indent the lines correctly
-            var indent = 0;
-            foreach (string line in lines.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
-            {
-                if (line == String.Empty) continue;
-
-                var indentation = String.Empty;
-                for (int i = 0; i < indent; i++)
-                    indentation += '\t';
-
-                result += indentation + line + Environment.NewLine;
-                if (line.Contains("group")) indent++;
-            }
-
-            return result.TrimEnd('\r', '\n'); ;
+            return result;
         }
     }
 }

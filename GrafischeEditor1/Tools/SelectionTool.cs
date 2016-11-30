@@ -12,22 +12,20 @@ namespace GrafischeEditor1.Tools
 {
     public class SelectionTool : IToolState
     {
-        public void MouseClick(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseClick(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
-            //foreach (var fig in figures) fig.Select(mouseState.SX, mouseState.SY);
-
-            figures = figuresStack.Execute(new SelectFigureCommand(mouseState.SX, mouseState.SY, figures), figures);
+            figure = figuresStack.Execute(new SelectFigureCommand(mouseState.SX, mouseState.SY, figure), figure);
         }
 
-        public void MouseDown(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseDown(Figure figures, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseMove(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseMove(Figure figures, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseUp(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseUp(Figure figures, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
         }
     }

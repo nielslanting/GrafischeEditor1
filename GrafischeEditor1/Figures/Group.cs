@@ -110,7 +110,10 @@ namespace GrafischeEditor1
             this.Selected = false;
 
             var found = false;
-            foreach (var fig in this.Figures)
+            var reversedFigures = new List<Figure>(this.Figures);
+            reversedFigures.Reverse();
+            
+            foreach (var fig in reversedFigures)
             {
                 fig.Select(x, y);
                 if (fig.Selected == true) return fig;
@@ -124,7 +127,13 @@ namespace GrafischeEditor1
 
             return null;
         }
-        
+
+        public override void Unselect()
+        {
+            this.Selected = false;
+            foreach (Figure f in this.Figures) f.Unselect();
+        }
+
         public override Figure GetSelected()
         {
             if (this.Selected == true) return this;

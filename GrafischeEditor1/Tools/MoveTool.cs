@@ -12,34 +12,24 @@ namespace GrafischeEditor1.Tools
 {
     public class MoveTool : IToolState
     {
-        private Figure GetSelectedFigure(List<Figure> figures)
-        {
-            foreach (var fig in figures)
-            {
-                var f = fig.GetSelected();
-                if (f != null) return f;
-            }
 
-            return null;
-        }
-
-        public void MouseClick(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseClick(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
-            Figure selectedFigure = GetSelectedFigure(figures);
+            Figure selectedFigure = figure.GetSelected();
             if (selectedFigure == null) return;
 
-            figures = figuresStack.Execute(new MoveFigureCommand(mouseState.SX, mouseState.SY, figures, selectedFigure), figures);
+            figure = figuresStack.Execute(new MoveFigureCommand(mouseState.SX, mouseState.SY, figure, selectedFigure), figure);
         }
 
-        public void MouseDown(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseDown(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseMove(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseMove(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseUp(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseUp(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
         }
     }

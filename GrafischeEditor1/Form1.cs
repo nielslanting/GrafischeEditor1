@@ -17,9 +17,9 @@ namespace GrafischeEditor1
 {
     public partial class Form1 : Form
     {
-        public UndoRedoStack<List<Figure>> FiguresStack;
+        public UndoRedoStack<Figure> FiguresStack;
 
-        public List<Figure> Figures { get; set; }
+        public Figure Figure { get; set; }
 
         private MouseState mouseState;
         private IToolState toolState;
@@ -28,8 +28,8 @@ namespace GrafischeEditor1
         {
             InitializeComponent();
 
-            this.Figures = new List<Figure>();
-            this.FiguresStack = new UndoRedoStack<List<Figure>>();
+            this.Figure = new Group(0, 0, new List<Figure>());
+            this.FiguresStack = new UndoRedoStack<Figure>();
 
             mouseState = new MouseState();
             mouseState.Changed += mouseState_Changed;
@@ -45,8 +45,7 @@ namespace GrafischeEditor1
 
             try
             {
-                foreach (Figure figure in this.Figures)
-                    figure.Draw(g);
+                this.Figure.Draw(g);
 
                 if(this.toolState is RectangleTool)
                 {
@@ -81,7 +80,7 @@ namespace GrafischeEditor1
             mouseState.SX = e.X;
             mouseState.SY = e.Y;
 
-            this.toolState.MouseClick(this.Figures, this.FiguresStack, mouseState);
+            this.toolState.MouseClick(this.Figure, this.FiguresStack, mouseState);
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -90,7 +89,7 @@ namespace GrafischeEditor1
             mouseState.SY = e.Y;
             mouseState.Pressed = true;
 
-            this.toolState.MouseDown(this.Figures, this.FiguresStack, mouseState);
+            this.toolState.MouseDown(this.Figure, this.FiguresStack, mouseState);
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -98,12 +97,12 @@ namespace GrafischeEditor1
             mouseState.EX = e.X;
             mouseState.EY = e.Y;
 
-            this.toolState.MouseMove(this.Figures, this.FiguresStack, mouseState);
+            this.toolState.MouseMove(this.Figure, this.FiguresStack, mouseState);
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
-            this.toolState.MouseUp(this.Figures, this.FiguresStack, mouseState);
+            this.toolState.MouseUp(this.Figure, this.FiguresStack, mouseState);
             mouseState.Reset();
         }
         #endregion
@@ -179,18 +178,17 @@ namespace GrafischeEditor1
         private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             var name = saveFileDialog.FileName;
-            File.WriteAllText(name, Parser.FiguresToString(this.Figures));
+            File.WriteAllText(name, Parser.FiguresToString(this.Figure));
         }
 
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             var name = openFileDialog.FileName;
-            var figures = new List<Figure>();
+            Figure figure = null;
 
             try
             {
-                figures = Parser.StringToFigures(File.ReadAllText(name));
-                figures.Reverse();
+                figure = Parser.StringToFigures(File.ReadAllText(name));
             }
             catch(FileLoadException ex)
             {
@@ -201,19 +199,20 @@ namespace GrafischeEditor1
                 MessageBox.Show("Corrupted file could not be loaded.");
             }
 
-            this.Figures = this.FiguresStack.Execute(new SetFiguresCommand(this.Figures, figures), this.Figures);
+            if(figure != null)
+                this.Figure = this.FiguresStack.Execute(new SetFiguresCommand(this.Figure, figure), this.Figure);
         }
         #endregion
 
         #region UndoRedoMethods
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Figures = this.FiguresStack.Undo(this.Figures);
+            this.Figure = this.FiguresStack.Undo(this.Figure);
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Figures = this.FiguresStack.Redo(this.Figures);
+            this.Figure = this.FiguresStack.Redo(this.Figure);
         }
         #endregion
 
@@ -221,14 +220,8 @@ namespace GrafischeEditor1
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
             var items = new List<string>();
-            foreach (Figure f in this.Figures)
-            {
-                if(f.ToString().Contains(Environment.NewLine))
-                    items.AddRange(f.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
-                else
-                    items.Add(f.ToString());
-            }              
 
+            items.AddRange(this.Figure.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
             bool changed = items.Count != this.listBoxFigures.Items.Count;
 
             if(changed == false)
@@ -255,21 +248,7 @@ namespace GrafischeEditor1
 
         private void listBoxFigures_SelectedValueChanged(object sender, EventArgs e)
         {
-            /*var selected = listBoxFigures.SelectedItem.ToString();
 
-            var lookup = Parser.StringToFigures(selected).FirstOrDefault();
-            if (lookup == null) return;
-
-            var selectedFigure = this.Figures.Where(x =>
-                x.Height == lookup.Height &&
-                x.Width == lookup.Width &&
-                x.X == lookup.X &&
-                x.Y == lookup.Y
-            ).FirstOrDefault();
-
-            if (selectedFigure == null) return;*/
-
-            //this.Figures = this.FiguresStack.Execute(new SelectFigureCommand(this.Figures, selectedFigure), this.Figures);
         }
         #endregion
 

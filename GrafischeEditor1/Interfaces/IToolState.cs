@@ -10,9 +10,9 @@ namespace GrafischeEditor1.Interfaces
 {
     public interface IToolState
     {
-        void MouseClick(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
-        void MouseDown(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
-        void MouseMove(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
-        void MouseUp(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState);
+        void MouseClick(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState);
+        void MouseDown(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState);
+        void MouseMove(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState);
+        void MouseUp(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState);
     }
 }

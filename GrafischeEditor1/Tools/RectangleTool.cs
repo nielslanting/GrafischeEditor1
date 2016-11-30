@@ -14,26 +14,26 @@ namespace GrafischeEditor1.Tools
     {
         public Figure Drawn { get; set; }
 
-        public void MouseClick(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseClick(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
         }
 
-        public void MouseDown(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseDown(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
             this.Drawn = new Square(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
         }
 
-        public void MouseMove(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseMove(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
             if (!mouseState.Pressed) return;
             this.Drawn = new Square(mouseState.SX, mouseState.SY, (mouseState.EX - mouseState.SX), (mouseState.EY - mouseState.SY));
         }
 
-        public void MouseUp(List<Figure> figures, UndoRedoStack<List<Figure>> figuresStack, MouseState mouseState)
+        public void MouseUp(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
-            if (this.Drawn != null)
+            if (this.Drawn != null && this.Drawn.Width > 0 && this.Drawn.Height > 0)
             {
-                figures = figuresStack.Execute(new AddFigureCommand(this.Drawn, figures), figures);
+                figure = figuresStack.Execute(new AddFigureCommand(this.Drawn, figure), figure);
                 this.Drawn = null;
             }       
         }

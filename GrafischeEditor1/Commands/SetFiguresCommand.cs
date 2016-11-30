@@ -7,37 +7,33 @@ using System.Threading.Tasks;
 
 namespace GrafischeEditor1.Commands
 {
-    class SetFiguresCommand : ICommand<List<Figure>>
+    class SetFiguresCommand : ICommand<Figure>
     {
-        List<Figure> Figures;
-        List<Figure> NewFigures;
-        List<Figure> OldFigures;
+        Figure Figure;
+        Figure NewFigure;
+        Figure OldFigure;
 
         public SetFiguresCommand()
         {
-            this.Figures = new List<Figure>();
-            this.NewFigures = new List<Figure>();
-            this.OldFigures = new List<Figure>();
         }
 
-        public SetFiguresCommand(List<Figure> cf, List<Figure> nf)
+        public SetFiguresCommand(Figure cf, Figure nf)
         {
-            this.Figures = cf;
-            this.NewFigures = nf;
-            this.OldFigures = new List<Figure>();
+            this.Figure = cf;
+            this.NewFigure = nf;
         }
 
-        public List<Figure> Execute()
+        public Figure Execute()
         {
-            this.OldFigures = new List<Figure>(this.Figures);
-            this.Figures = new List<Figure>(this.NewFigures);
-            return this.Figures;
+            this.OldFigure = this.Figure;
+            this.Figure = this.NewFigure;
+            return this.Figure;
         }
 
-        public List<Figure> Undo()
+        public Figure Undo()
         {
-            this.Figures = new List<Figure>(this.OldFigures);    
-            return this.Figures;
+            this.Figure = this.OldFigure;    
+            return this.Figure;
         }
     }
 }

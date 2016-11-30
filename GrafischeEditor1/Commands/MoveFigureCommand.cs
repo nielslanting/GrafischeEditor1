@@ -7,45 +7,44 @@ using System.Threading.Tasks;
 
 namespace GrafischeEditor1.Commands
 {
-    class MoveFigureCommand : ICommand<List<Figure>>
+    class MoveFigureCommand : ICommand<Figure>
     {
-        List<Figure> Figures;
+        Figure Figure;
         Figure SelectedFigure;
         int X = 0, Y = 0;
         int oldX = 0, oldY = 0;
 
         public MoveFigureCommand()
         {
-            this.Figures = new List<Figure>();
         }
 
-        public MoveFigureCommand(int x, int y, List<Figure> figures, Figure selected)
+        public MoveFigureCommand(int x, int y, Figure figure, Figure selected)
         {
-            this.Figures = figures;
+            this.Figure = figure;
             this.SelectedFigure = selected;
             this.X = x;
             this.Y = y;
         }
 
-        public List<Figure> Execute()
+        public Figure Execute()
         {
-            if (this.SelectedFigure == null) return this.Figures;
+            if (this.SelectedFigure == null) return this.Figure;
 
             this.oldX = this.SelectedFigure.X;
             this.oldY = this.SelectedFigure.Y;
 
             this.SelectedFigure.Move(this.X, this.Y);
 
-            return this.Figures;
+            return this.Figure;
         }
 
-        public List<Figure> Undo()
+        public Figure Undo()
         {
-            if (this.SelectedFigure == null) return this.Figures;
+            if (this.SelectedFigure == null) return this.Figure;
 
             this.SelectedFigure.Move(this.oldX, this.oldY);
 
-            return this.Figures;
+            return this.Figure;
         }
     }
 }

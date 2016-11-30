@@ -7,29 +7,28 @@ using System.Threading.Tasks;
 
 namespace GrafischeEditor1.Commands
 {
-    class ResizeFigureCommand : ICommand<List<Figure>>
+    class ResizeFigureCommand : ICommand<Figure>
     {
-        List<Figure> Figures;
+        Figure Figure;
         Figure SelectedFigure;
         int X = 0, Y = 0;
         int oldWidth = 0, oldHeight = 0, oldX = 0, oldY = 0;
 
         public ResizeFigureCommand()
         {
-            this.Figures = new List<Figure>();
         }
 
-        public ResizeFigureCommand(int x, int y, List<Figure> figures, Figure selectedFigure)
+        public ResizeFigureCommand(int x, int y, Figure figure, Figure selectedFigure)
         {
-            this.Figures = figures;
+            this.Figure = figure;
             this.SelectedFigure = selectedFigure;
             this.X = x;
             this.Y = y;
         }
 
-        public List<Figure> Execute()
+        public Figure Execute()
         {
-            if (SelectedFigure == null) return this.Figures;
+            if (SelectedFigure == null) return this.Figure;
 
             this.oldX = this.SelectedFigure.X;
             this.oldY = this.SelectedFigure.Y;
@@ -42,15 +41,15 @@ namespace GrafischeEditor1.Commands
 
             this.SelectedFigure.Resize(newWidth, newHeight);
 
-            return this.Figures;
+            return this.Figure;
         }
 
-        public List<Figure> Undo()
+        public Figure Undo()
         {
             this.SelectedFigure.Move(this.oldX, this.oldY);
             this.SelectedFigure.Resize(this.oldWidth, this.oldHeight);
 
-            return this.Figures;
+            return this.Figure;
         }
     }
 }

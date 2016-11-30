@@ -7,32 +7,31 @@ using System.Threading.Tasks;
 
 namespace GrafischeEditor1.Commands
 {
-    class AddFigureCommand : ICommand<List<Figure>>
+    class AddFigureCommand : ICommand<Figure>
     {
-        List<Figure> Figures;
+        Figure Figure;
         Figure FigureToAdd;
 
         public AddFigureCommand()
         {
-            this.Figures = new List<Figure>();
         }
 
-        public AddFigureCommand(Figure fta, List<Figure> figures)
+        public AddFigureCommand(Figure fta, Figure figure)
         {
-            this.Figures = figures;
+            this.Figure = figure;
             this.FigureToAdd = fta;
         }
 
-        public List<Figure> Execute()
+        public Figure Execute()
         {
-            this.Figures.Add(this.FigureToAdd);
-            return this.Figures;
+            ((Group)(this.Figure)).Figures.Add(this.FigureToAdd);
+            return this.Figure;
         }
 
-        public List<Figure> Undo()
+        public Figure Undo()
         {
-            this.Figures.Remove(this.FigureToAdd);
-            return this.Figures;
+            ((Group)(this.Figure)).Figures.Remove(this.FigureToAdd);
+            return this.Figure;
         }
     }
 }

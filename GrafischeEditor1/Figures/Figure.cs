@@ -27,6 +27,11 @@ namespace GrafischeEditor1
 
         public abstract Figure Select(int x, int y);
 
+        public virtual void Unselect()
+        {
+            this.Selected = false;
+        }
+
         public virtual Figure GetSelected()
         {
             if (this.Selected == true) return this;

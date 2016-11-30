@@ -8,21 +8,20 @@ namespace GrafischeEditor1
 {
     class Parser
     {
-        public static List<Figure> StringToFigures(string input)
+        public static Figure StringToFigures(string input)
         {
-            Stack<Figure> stack = new Stack<Figure>();
+            var stack = new List<Figure>();
             
             foreach(string raw in input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
             {
                 string line = raw.Trim().Trim('\t');
-                Figure lastFigure = stack.Count > 0 ? stack.Peek() : null;
+                Figure lastFigure = stack.Count > 0 ? stack.Last() : null;
 
                 // Get the active group
                 Group group = null;
                 if (lastFigure != null && lastFigure.GetType() == typeof(Group) 
                     && ((Group)lastFigure).Figures.Capacity != ((Group)lastFigure).Figures.Count)               
-                    group = (Group)lastFigure;
-                
+                    group = (Group)lastFigure;      
 
                 Figure figure = null;
 
@@ -40,21 +39,35 @@ namespace GrafischeEditor1
                     if (group != null)
                         group.Figures.Add(figure);
                     else
-                        stack.Push(figure);
+                        stack.Add(figure);
                 }
             }
 
-            return stack.ToList();
+            var top = stack.FirstOrDefault();
+            if (top is Group)
+            {
+                var figures = stack.Skip(1);
+                foreach (Figure f in figures)
+                    ((Group)(top)).Figures.Add(f);
+            }
+            else
+            {
+                top = new Group(0, 0, stack);
+            }
+
+            return top;
         }
 
-        public static string FiguresToString(List<Figure> figures)
+        public static string FiguresToString(Figure figure)
         {
             string result = String.Empty;
 
             // Get all the lines
             string lines = String.Empty;
-            foreach (Figure figure in figures)
-                lines += figure.ToString() + Environment.NewLine;
+
+            lines = figure.ToString();
+            /*foreach (Figure figure in figures)
+                lines += figure.ToString() + Environment.NewLine;*/
 
             // Indent the lines correctly
             var indent = 0;

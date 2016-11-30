@@ -192,10 +192,14 @@ namespace GrafischeEditor1
                 figures = Parser.StringToFigures(File.ReadAllText(name));
                 figures.Reverse();
             }
-            catch
+            catch(FileLoadException ex)
             {
                 MessageBox.Show("The file could not be opened.");
-            }           
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Corrupted file could not be loaded.");
+            }
 
             this.Figures = this.FiguresStack.Execute(new SetFiguresCommand(this.Figures, figures), this.Figures);
         }

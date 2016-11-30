@@ -9,8 +9,8 @@ namespace GrafischeEditor1
 {
     public abstract class Figure : IDrawable
     {
-        public int X { get; set; } = 0;
-        public int Y { get; set; } = 0;
+        public virtual int X { get; set; } = 0;
+        public virtual int Y { get; set; } = 0;
 
         public abstract int Width { get; set; }
         public abstract int Height { get; set; }

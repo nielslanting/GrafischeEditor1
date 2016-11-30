@@ -13,32 +13,37 @@ namespace GrafischeEditor1
 
         public List<Figure> Figures { get; set; }
 
-        public new int X {
+        public override int X {
             get
             {
-                if (this.Figures.Count <= 0) return 0;
+                if (this.Figures == null || this.Figures.Count <= 0) return 0;
+
                 var fig = this.Figures.OrderBy(x => x.X).FirstOrDefault();
                 if (fig == null) return 0;
                 return fig.X;
             }
             set
             {
+                if (Figures == null) return;
+                
                 foreach (var fig in Figures)
                     fig.X += value;
             }
         }
 
-        public new int Y
+        public override int Y
         {
             get
             {
-                if (this.Figures.Count <= 0) return 0;
+                if (this.Figures == null || this.Figures.Count <= 0) return 0;
                 var fig = this.Figures.OrderBy(x => x.Y).FirstOrDefault();
                 if (fig == null) return 0;
                 return fig.Y;
             }
             set
             {
+                if (this.Figures == null) return;
+
                 foreach (var fig in Figures)
                     fig.Y += value;
             }
@@ -156,25 +161,37 @@ namespace GrafischeEditor1
 
         public override void Resize(int nw, int nh)
         {
+            var tx = 0;
+            var ty = 0;
+
+            if (nw < 0)
+            {
+                tx = nw;
+                nw = Math.Abs(nw);
+            }
+
+            if (nh < 0)
+            {
+                ty = nh;
+                nh = Math.Abs(nh);
+            }
+
             var x = this.X;
             var y = this.Y;
 
             var h = (double)(this.Height);
             var w = (double)(this.Width);
 
-            var pnw = nw - this.X;
-            var pnh = nh - this.Y;
-
-            double wratio = (double)pnw / w;
-            double hratio = (double)pnh / h;
+            double wratio = (double)nw / w;
+            double hratio = (double)nh / h;
 
             foreach (Figure f in this.Figures)
             {
                 f.Width = (int)((double)f.Width * wratio);
                 f.Height = (int)((double)f.Height * hratio);
 
-                f.X = (int)(pnw * ((f.X - x) / w)) + x;
-                f.Y = (int)(pnh * ((f.Y - y) / h)) + y;
+                f.X = (int)(nw * ((f.X - x) / w)) + x + tx;
+                f.Y = (int)(nh * ((f.Y - y) / h)) + y + ty;
             }
 
             //base.Resize(nw, nh);

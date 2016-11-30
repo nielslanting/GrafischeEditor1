@@ -221,36 +221,49 @@ namespace GrafischeEditor1
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
             var items = new List<string>();
-            var flat = new List<Figure>();
 
-            var current = this.Figure;
-
-            while(current is Group)
-            {
-                flat.Add(current);
-                items.Add("group " + ((Group)current).Figures.Count);
-
-                var changed = false;
-                foreach (Figure f in ((Group)current).Figures)
-                {
-                    flat.Add(f);
-
-                    if (!(f is Group))
-                        items.Add(f.ToString());
-                    else
-                    {
-                        
-                        current = f;
-                        changed = true;
-                    }                        
-                }
-
-                if (!changed) current = null;
-            }
-
+            var flat = ((Group)this.Figure).Enumerate().ToList();
             if(flat == null || this.Flat == null || !flat.SequenceEqual(this.Flat))
             {
                 this.Flat = flat;
+
+                int indent = 0;
+                List<int> count = new List<int>();
+
+                foreach(Figure f in flat)
+                {
+                    bool current = false;
+
+                    // Decrement group counter
+                    if (count.Count > 0 && count.LastOrDefault() > 0)
+                        count[count.Count - 1]--;
+
+                    // Add counts if its a group
+                    if(f is Group)
+                    {
+                        current = true;
+                        indent++;
+                        count.Add(((Group)f).Figures.Count + 1);
+                    }
+
+                    // Remove count if its zero
+                    if (count.Count > 0 && count.LastOrDefault() == 0)
+                    {
+                        count.Remove(count.LastOrDefault());
+                        indent--;
+                    }
+                        
+                    // Prefix the items
+                    string prefix = "";
+                    var ind = indent;
+                    if (current == true) ind--;
+                    for (int i = 0; i < ind; i++)
+                        prefix += "- ";
+
+                    // Add the items
+                    items.Add(prefix + f.ToString());
+                }
+
                 this.listBoxFigures.Items.Clear();
                 foreach (var item in items)
                 {

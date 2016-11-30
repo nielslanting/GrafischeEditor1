@@ -219,13 +219,22 @@ namespace GrafischeEditor1
 
         public override string ToString()
         {
-            var result = String.Empty;
-            result += String.Format("group {0}", this.Figures.Count) + Environment.NewLine;
+            return String.Format("group {0}", this.Figures.Count);
+        }
 
-            foreach (Figure figure in this.Figures)
-                result += figure.ToString() + Environment.NewLine;
+        public IEnumerable<Figure> Enumerate()
+        {
+            var flat = new List<Figure>() { this };
 
-            return result;
+            foreach(Figure f in this.Figures)
+            {
+                flat.Add(f);
+
+                if (f is Group)
+                    flat.AddRange(((Group)f).Enumerate().Skip(1));
+            }
+
+            return flat;
         }
     }
 }

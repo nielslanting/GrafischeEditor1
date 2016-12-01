@@ -15,10 +15,10 @@ namespace GrafischeEditor1.Tools
 
         public void MouseClick(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
-            Figure selectedFigure = figure.GetSelected();
-            if (selectedFigure == null) return;
+            List<Figure> selectedFigures = figure.GetSelected();
+            if (selectedFigures == null || selectedFigures.Count <= 0) return;
 
-            figure = figuresStack.Execute(new MoveFigureCommand(mouseState.SX, mouseState.SY, figure, selectedFigure), figure);
+            figure = figuresStack.Execute(new MoveFigureCommand(mouseState.SX, mouseState.SY, figure, selectedFigures.FirstOrDefault()), figure);
         }
 
         public void MouseDown(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)

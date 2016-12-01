@@ -13,6 +13,7 @@ namespace GrafischeEditor1
 
         private int _sx = 0, _sy = 0, _ex = 0, _ey = 0;
         private bool _pressed = false;
+        private bool _ctrlPressed = false;
 
         public void Reset()
         {
@@ -21,6 +22,7 @@ namespace GrafischeEditor1
             this.EX = 0;
             this.EY = 0;
             this.Pressed = false;
+            this.CtrlPressed = false;
         }
 
         public int SX {
@@ -87,10 +89,22 @@ namespace GrafischeEditor1
             }
         }
 
+        public bool CtrlPressed
+        {
+            get { return _ctrlPressed; }
+            set
+            {
+                if(_ctrlPressed != value)
+                {
+                    _ctrlPressed = value;
+                    if (Changed != null) Changed(this);
+                }
+            }
+        }
 
         public override string ToString()
         {
-            return String.Format("({0}, {1}) ({2}, {3}) pressed: {4}", _sx, _sy, _ex, _ey, _pressed);
+            return String.Format("({0}, {1}) ({2}, {3}) pressed: {4} ctrl: {5}", _sx, _sy, _ex, _ey, _pressed, _ctrlPressed);
         }
     }
 }

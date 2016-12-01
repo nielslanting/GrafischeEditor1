@@ -10,8 +10,9 @@ namespace GrafischeEditor1.Commands
     class SelectFigureCommand : ICommand<Figure>
     {
         Figure Figure;
-        Figure OldFigure;
+        List<Figure> OldFigures;
         Figure ToSelect;
+
         int X = 0;
         int Y = 0;
 
@@ -34,7 +35,7 @@ namespace GrafischeEditor1.Commands
 
         public Figure Execute()
         {
-            this.OldFigure = Figure.GetSelected();
+            this.OldFigures = Figure.GetSelected();
 
             this.Figure.Unselect();
 
@@ -48,10 +49,14 @@ namespace GrafischeEditor1.Commands
 
         public Figure Undo()
         {
-            if (this.OldFigure == null) return this.Figure;
+            if (this.OldFigures == null) return this.Figure;
 
             this.Figure.Unselect();
-            this.OldFigure.Selected = true;
+            //this.OldFigures.Selected = true;
+            foreach(Figure f in this.OldFigures)
+            {
+                f.Selected = true;
+            }
 
             return this.Figure;
         }

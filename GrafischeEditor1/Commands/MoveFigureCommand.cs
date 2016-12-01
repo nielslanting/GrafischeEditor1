@@ -30,10 +30,13 @@ namespace GrafischeEditor1.Commands
         {
             if (this.SelectedFigure == null) return this.Figure;
 
-            this.oldX = this.SelectedFigure.X;
-            this.oldY = this.SelectedFigure.Y;
+            var rx = this.X - this.SelectedFigure.X;
+            var ry = this.Y - this.SelectedFigure.Y;
 
-            this.SelectedFigure.Move(this.X, this.Y);
+            this.oldX = rx * -1;
+            this.oldY = ry * -1;
+
+            this.SelectedFigure.Move(rx, ry);
 
             return this.Figure;
         }

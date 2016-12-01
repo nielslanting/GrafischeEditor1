@@ -117,8 +117,7 @@ namespace GrafischeEditor1
             
             foreach (var fig in reversedFigures)
             {
-                fig.Select(x, y);
-                if (fig.Selected == true) return fig;
+                if (fig.Select(x, y) != null) return fig;
             }
                        
             if (found == false && x >= this.X && x <= (this.X + this.Width) && y >= this.Y && y <= (this.Y + this.Height))
@@ -136,38 +135,27 @@ namespace GrafischeEditor1
             foreach (Figure f in this.Figures) f.Unselect();
         }
 
-        public override Figure GetSelected()
+        public override List<Figure> GetSelected()
         {
-            if (this.Selected == true) return this;
+            if (this.Selected == true) return new List<Figure>() { this };
 
-            foreach(var fig in this.Figures)
+            var result = new List<Figure>();
+            foreach (var fig in this.Figures)
             {
-                if (fig.Selected == true) return fig;
+                result.AddRange(fig.GetSelected());
             }
 
-            return null;
+            return result;
         }
 
-        public override void Move(int x, int y)
+        public override void Move(int rx, int ry)
         {
-            if(this.Selected)
+            foreach (var fig in this.Figures)
             {
-                var difx = x - this.X;
-                var dify = y - this.Y;
-
-                foreach (var fig in this.Figures)
-                {
-                    fig.X += difx;
-                    fig.Y += dify;
-                }
-            }
-            else
-            {
-                foreach (var fig in this.Figures)
-                {
-                    fig.Move(x, y);
-                }
-            }
+                fig.X += rx;
+                fig.Y += ry;
+                //fig.Move(rx, ry);
+            }          
         }
 
         public override void Resize(int nw, int nh)

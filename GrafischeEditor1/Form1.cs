@@ -86,6 +86,7 @@ namespace GrafischeEditor1
         {
             mouseState.SX = e.X;
             mouseState.SY = e.Y;
+            mouseState.CtrlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
 
             this.toolState.MouseClick(this.Figure, this.FiguresStack, mouseState);
         }
@@ -95,6 +96,7 @@ namespace GrafischeEditor1
             mouseState.SX = e.X;
             mouseState.SY = e.Y;
             mouseState.Pressed = true;
+            mouseState.CtrlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
 
             this.toolState.MouseDown(this.Figure, this.FiguresStack, mouseState);
         }
@@ -103,6 +105,7 @@ namespace GrafischeEditor1
         {
             mouseState.EX = e.X;
             mouseState.EY = e.Y;
+            mouseState.CtrlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
 
             this.toolState.MouseMove(this.Figure, this.FiguresStack, mouseState);
         }
@@ -320,7 +323,5 @@ namespace GrafischeEditor1
             Group g = new Group(0, 0, new List<Figure>());
             ((Group)this.Figure).Figures.Add(g);
         }
-
-
     }
 }

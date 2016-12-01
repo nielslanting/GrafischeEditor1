@@ -54,14 +54,17 @@ namespace GrafischeEditor1
             this.Selected = false;
         }
 
-        public virtual List<Figure> GetSelected()
+        public virtual Figure GetSelected()
         {
             var result = new List<Figure>();
 
             if (this.Selected == true)
                 result.Add(this);
 
-            return result;
+            if (result.Count == 1) return result.FirstOrDefault();
+            else if(result.Count > 1) return new Group(0, 0, result);
+
+            return null;
         }
 
         public virtual void Move(int rx, int ry)

@@ -14,8 +14,7 @@ namespace GrafischeEditor1.Tools
     {
         public void MouseClick(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
-            Figure selectedFigure = figure.GetSelected().FirstOrDefault();
-            if (selectedFigure == null) return;
+            Figure selectedFigure = figure.GetSelected();
 
             figure = figuresStack.Execute(new ResizeFigureCommand(mouseState.SX, mouseState.SY, figure, selectedFigure), figure);
         }

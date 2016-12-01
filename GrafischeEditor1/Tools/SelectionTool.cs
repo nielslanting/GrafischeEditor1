@@ -14,7 +14,7 @@ namespace GrafischeEditor1.Tools
     {
         public void MouseClick(Figure figure, UndoRedoStack<Figure> figuresStack, MouseState mouseState)
         {
-            figure = figuresStack.Execute(new SelectFigureCommand(mouseState.SX, mouseState.SY, figure), figure);
+            figure = figuresStack.Execute(new SelectFigureCommand(mouseState.SX, mouseState.SY, mouseState.CtrlPressed, figure), figure);
         }
 
         public void MouseDown(Figure figures, UndoRedoStack<Figure> figuresStack, MouseState mouseState)

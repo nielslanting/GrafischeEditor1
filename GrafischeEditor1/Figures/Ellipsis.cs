@@ -55,13 +55,12 @@ namespace GrafischeEditor1
         }
 
         public override Figure Select(int x, int y)
-        {
-            this.Selected = false;
+        {           
             if (x >= this.X && x <= (this.X + this.Width) && y >= this.Y && y <= (this.Y + this.Height))
             {
-                this.Selected = true;
+                this.Selected = !this.Selected;
                 return this;
-            }
+            } else this.Selected = false;
 
             return null;
         }

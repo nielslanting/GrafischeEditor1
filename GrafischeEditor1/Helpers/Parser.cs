@@ -71,19 +71,20 @@ namespace GrafischeEditor1
                 if (count.Count > 0 && count.LastOrDefault() > 0)
                     count[count.Count - 1]--;
 
+                // Remove count if its zero
+                if (count.Count > 0 && count.LastOrDefault() == 0)
+                {
+                    count.Remove(count.LastOrDefault());
+                    indent--;
+                }
+
+
                 // Add counts if its a group
                 if (f is Group)
                 {
                     current = true;
                     indent++;
                     count.Add(((Group)f).Figures.Count + 1);
-                }
-
-                // Remove count if its zero
-                if (count.Count > 0 && count.LastOrDefault() == 0)
-                {
-                    count.Remove(count.LastOrDefault());
-                    indent--;
                 }
 
                 // Prefix the items

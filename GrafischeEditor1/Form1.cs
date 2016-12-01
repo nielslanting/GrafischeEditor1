@@ -268,19 +268,19 @@ namespace GrafischeEditor1
                     if (count.Count > 0 && count.LastOrDefault() > 0)
                         count[count.Count - 1]--;
 
-                    // Add counts if its a group
-                    if(f is Group)
-                    {
-                        current = true;
-                        indent++;
-                        count.Add(((Group)f).Figures.Count + 1);
-                    }
-
                     // Remove count if its zero
                     if (count.Count > 0 && count.LastOrDefault() == 0)
                     {
                         count.Remove(count.LastOrDefault());
                         indent--;
+                    }
+
+                    // Add counts if its a group
+                    if (f is Group)
+                    {
+                        current = true;
+                        indent++;
+                        count.Add(((Group)f).Figures.Count + 1);
                     }
                         
                     // Prefix the items
@@ -319,9 +319,11 @@ namespace GrafischeEditor1
 
         private void buttonCreateGroup_Click(object sender, EventArgs e)
         {
-            //Square s = new Square(50, 50, 100, 100);
-            Group g = new Group(0, 0, new List<Figure>());
-            ((Group)this.Figure).Figures.Add(g);
+            var selection = this.Figure.GetSelected();
+            if(selection is Group)
+                this.Figure = this.FiguresStack.Execute(new CreateGroupCommand(selection, this.Figure), this.Figure);
+            else
+                MessageBox.Show("You need to select multiple items");
         }
     }
 }

@@ -108,9 +108,7 @@ namespace GrafischeEditor1
         }
 
         public override Figure Select(int x, int y)
-        {
-            this.Selected = false;
-
+        {            
             var found = false;
             var reversedFigures = new List<Figure>(this.Figures);
             reversedFigures.Reverse();
@@ -122,9 +120,9 @@ namespace GrafischeEditor1
                        
             if (found == false && x >= this.X && x <= (this.X + this.Width) && y >= this.Y && y <= (this.Y + this.Height))
             {
-                this.Selected = true;
+                this.Selected = !this.Selected;
                 return this;
-            }
+            } else this.Selected = false;
 
             return null;
         }
@@ -135,17 +133,22 @@ namespace GrafischeEditor1
             foreach (Figure f in this.Figures) f.Unselect();
         }
 
-        public override List<Figure> GetSelected()
+        public override Figure GetSelected()
         {
-            if (this.Selected == true) return new List<Figure>() { this };
+            if (this.Selected == true) return this;
 
             var result = new List<Figure>();
             foreach (var fig in this.Figures)
             {
-                result.AddRange(fig.GetSelected());
+                var s = fig.GetSelected();
+                if(s != null)
+                    result.Add(s);
             }
 
-            return result;
+            if (result.Count == 1) return result.FirstOrDefault();
+            else if (result.Count > 1) return new Group(0, 0, result);
+
+            return null;
         }
 
         public override void Move(int rx, int ry)
@@ -225,6 +228,43 @@ namespace GrafischeEditor1
             }
 
             return flat;
+        }
+
+        /// <summary>
+        /// Removes an object from a group and returns it parent
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public Group Remove(Figure f)
+        {
+            if (this.Figures.Contains(f))
+            {
+                this.Figures.Remove(f);
+                return this;
+            }
+
+            foreach(Figure figure in this.Figures)
+            {
+                if (figure is Group)
+                    return ((Group)figure).Remove(f);
+            }
+
+            return null;
+        }
+
+        public void Replace(Figure f, Figure n)
+        {
+            if (this.Figures.Contains(f))
+            {
+                this.Figures.Remove(f);
+                this.Figures.Add(n);
+            }
+
+            foreach (Figure figure in this.Figures)
+            {
+                if (figure is Group)
+                    ((Group)figure).Remove(f);
+            }
         }
     }
 }

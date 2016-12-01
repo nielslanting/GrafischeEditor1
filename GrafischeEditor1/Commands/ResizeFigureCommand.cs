@@ -30,8 +30,6 @@ namespace GrafischeEditor1.Commands
         {
             if (SelectedFigure == null) return this.Figure;
 
-            this.oldX = this.SelectedFigure.X;
-            this.oldY = this.SelectedFigure.Y;
 
             int newWidth = this.X - this.SelectedFigure.X;
             int newHeight = this.Y - this.SelectedFigure.Y;
@@ -39,7 +37,14 @@ namespace GrafischeEditor1.Commands
             this.oldWidth = this.SelectedFigure.Width;
             this.oldHeight = this.SelectedFigure.Height;
 
+            int bx = this.SelectedFigure.X;
+            int by = this.SelectedFigure.Y;
+
             this.SelectedFigure.Resize(newWidth, newHeight);
+
+
+            this.oldX = this.SelectedFigure.X - bx;
+            this.oldY = this.SelectedFigure.Y - by;
 
             return this.Figure;
         }

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CreateGroupCommand.cs" />
     <Compile Include="Commands\MoveFigureCommand.cs" />
     <Compile Include="Commands\ResizeFigureCommand.cs" />
     <Compile Include="Commands\SelectFigureCommand.cs" />

@@ -36,7 +36,7 @@ namespace GrafischeEditor1.Commands
             this.oldX = rx * -1;
             this.oldY = ry * -1;
 
-            this.SelectedFigure.Move(rx, ry);
+            this.SelectedFigure.Move(rx, ry); 
 
             return this.Figure;
         }

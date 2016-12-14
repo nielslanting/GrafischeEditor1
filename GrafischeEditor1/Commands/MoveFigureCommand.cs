@@ -49,5 +49,14 @@ namespace GrafischeEditor1.Commands
 
             return this.Figure;
         }
+
+        public override string ToString()
+        {
+            var selected = String.Empty;
+            if (this.SelectedFigure != null)
+                selected = this.SelectedFigure.ToString();
+
+            return String.Format("MoveFigure: {0}", selected);
+        }
     }
 }

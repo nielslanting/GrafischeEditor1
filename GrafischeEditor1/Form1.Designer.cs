@@ -40,6 +40,7 @@
             this.toolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -47,9 +48,10 @@
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.buttonCreateGroup = new System.Windows.Forms.Button();
             this.checkedListBoxFigures = new System.Windows.Forms.CheckedListBox();
-            this.panel1 = new GrafischeEditor1.Display();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.listBoxUndo = new System.Windows.Forms.ListBox();
+            this.listBoxRedo = new System.Windows.Forms.ListBox();
+            this.panel1 = new GrafischeEditor1.Display();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -126,7 +128,7 @@
             this.redoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(933, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1436, 24);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -143,16 +145,23 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // undoToolStripMenuItem
             // 
@@ -207,6 +216,27 @@
             this.checkedListBoxFigures.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxFigures_ItemCheck);
             this.checkedListBoxFigures.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxFigures_SelectedIndexChanged);
             // 
+            // exportFileDialog
+            // 
+            this.exportFileDialog.Filter = "bitmap (*.bmp)|*.bmp|All files (*.*)|*.*";
+            this.exportFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.exportFileDialog_FileOk);
+            // 
+            // listBoxUndo
+            // 
+            this.listBoxUndo.FormattingEnabled = true;
+            this.listBoxUndo.Location = new System.Drawing.Point(927, 27);
+            this.listBoxUndo.Name = "listBoxUndo";
+            this.listBoxUndo.Size = new System.Drawing.Size(257, 498);
+            this.listBoxUndo.TabIndex = 11;
+            // 
+            // listBoxRedo
+            // 
+            this.listBoxRedo.FormattingEnabled = true;
+            this.listBoxRedo.Location = new System.Drawing.Point(1190, 27);
+            this.listBoxRedo.Name = "listBoxRedo";
+            this.listBoxRedo.Size = new System.Drawing.Size(234, 498);
+            this.listBoxRedo.TabIndex = 12;
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
@@ -221,23 +251,13 @@
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exportToolStripMenuItem.Text = "Export";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
-            // 
-            // exportFileDialog
-            // 
-            this.exportFileDialog.Filter = "bitmap (*.bmp)|*.bmp|All files (*.*)|*.*";
-            this.exportFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.exportFileDialog_FileOk);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(933, 532);
+            this.ClientSize = new System.Drawing.Size(1436, 532);
+            this.Controls.Add(this.listBoxRedo);
+            this.Controls.Add(this.listBoxUndo);
             this.Controls.Add(this.checkedListBoxFigures);
             this.Controls.Add(this.buttonCreateGroup);
             this.Controls.Add(this.buttonResize);
@@ -246,8 +266,8 @@
             this.Controls.Add(this.buttonRectangle);
             this.Controls.Add(this.buttonMove);
             this.Controls.Add(this.buttonSelect);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -281,6 +301,8 @@
         private System.Windows.Forms.CheckedListBox checkedListBoxFigures;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog exportFileDialog;
+        private System.Windows.Forms.ListBox listBoxUndo;
+        private System.Windows.Forms.ListBox listBoxRedo;
     }
 }
 

@@ -35,5 +35,14 @@ namespace GrafischeEditor1.Commands
             this.Figure = this.OldFigure;    
             return this.Figure;
         }
+
+        public override string ToString()
+        {
+            var figures = String.Empty;
+            if (this.NewFigure != null)
+                figures = this.NewFigure.ToString();
+
+            return String.Format("SetFigure: {0}", figures);
+        }
     }
 }

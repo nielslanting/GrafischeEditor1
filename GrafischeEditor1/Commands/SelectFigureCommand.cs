@@ -72,5 +72,14 @@ namespace GrafischeEditor1.Commands
 
             return this.Figure;
         }
+
+        public override string ToString()
+        {
+            var selected = String.Empty;
+            if (this.Figure != null)
+                selected = this.Figure.ToString();
+
+            return String.Format("SelectFigure: {0}", selected);
+        }
     }
 }

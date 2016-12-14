@@ -33,5 +33,14 @@ namespace GrafischeEditor1.Commands
             ((Group)(this.Figure)).Figures.Remove(this.FigureToAdd);
             return this.Figure;
         }
+
+        public override string ToString()
+        {
+            var figure = String.Empty;
+            if (this.FigureToAdd != null)
+                figure = this.FigureToAdd.ToString();
+
+            return String.Format("AddFigure: {0}", figure);
+        }
     }
 }

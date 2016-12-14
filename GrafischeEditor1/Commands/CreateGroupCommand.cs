@@ -81,5 +81,14 @@ namespace GrafischeEditor1.Commands
 
             return this.Figure;
         }
+
+        public override string ToString()
+        {
+            var selected = String.Empty;
+            if (this.Selected != null)
+                selected = this.Selected.ToString();
+
+            return String.Format("CreateGroup: {0}", this.Selected.ToString());
+        }
     }
 }

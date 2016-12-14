@@ -250,6 +250,7 @@ namespace GrafischeEditor1
         #region TreeViewMethods
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
+            #region LayerView
             var items = new List<string>();
 
             var flat = ((Group)this.Figure).Enumerate().ToList();
@@ -298,6 +299,19 @@ namespace GrafischeEditor1
                 foreach (var item in items)
                     this.checkedListBoxFigures.Items.Add(item);
                 
+            }
+            #endregion
+
+            this.listBoxUndo.Items.Clear();
+            foreach(var item in this.FiguresStack.UndoStack)
+            {
+                this.listBoxUndo.Items.Add(item.ToString());
+            }
+
+            this.listBoxRedo.Items.Clear();
+            foreach (var item in this.FiguresStack.RedoStack)
+            {
+                this.listBoxRedo.Items.Add(item.ToString());
             }
         }
 

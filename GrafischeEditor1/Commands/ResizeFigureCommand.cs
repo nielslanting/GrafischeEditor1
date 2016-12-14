@@ -51,10 +51,20 @@ namespace GrafischeEditor1.Commands
 
         public Figure Undo()
         {
-            this.SelectedFigure.Move(this.oldX, this.oldY);
             this.SelectedFigure.Resize(this.oldWidth, this.oldHeight);
 
+            this.SelectedFigure.Move(this.oldX * -1, this.oldY * -1);
+
             return this.Figure;
+        }
+
+        public override string ToString()
+        {
+            var selected = String.Empty;
+            if(this.SelectedFigure != null) 
+                this.SelectedFigure.ToString();
+
+            return String.Format("ResizeFigure: {0}", selected);
         }
     }
 }

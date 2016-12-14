@@ -62,7 +62,7 @@ namespace GrafischeEditor1.Commands
         {
             var selected = String.Empty;
             if(this.SelectedFigure != null) 
-                this.SelectedFigure.ToString();
+                selected = this.SelectedFigure.ToString();
 
             return String.Format("ResizeFigure: {0}", selected);
         }

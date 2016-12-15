@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GrafischeEditor1.Interfaces;
+using GrafischeEditor1.Strategy;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace GrafischeEditor1.Commands
     {
         Figure Figure;
         Figure FigureToAdd;
+        
+        IStrategy EllipsisStrategy = DrawEllipsis.Instance;
 
         public AddFigureCommand()
         {

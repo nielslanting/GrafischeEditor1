@@ -16,6 +16,8 @@ namespace GrafischeEditor1
         public abstract int Width { get; set; }
         public abstract int Height { get; set; }
 
+        public IStrategy Strategy { get; set; }
+
         public bool Visible { get; set; } = true;
 
         public void ToggleVisibility()
@@ -25,13 +27,18 @@ namespace GrafischeEditor1
 
         public virtual bool Selected { get; set; } = false;
 
-        protected Figure(int x, int y)
+        public Figure(int x, int y, IStrategy strategy)
         {
             this.X = x;
             this.Y = y;
+            this.Strategy = strategy;
         }
 
-        public abstract void Draw(Graphics g);
+        public virtual void Draw(Graphics g)
+        {
+            this.Strategy.Draw(g, this.Visible, this.X, this.Y, this.Width, this.Height);
+            Figure.DrawSelection(g, this);
+        }
 
         public abstract Figure Select(int x, int y);
 
@@ -67,12 +74,6 @@ namespace GrafischeEditor1
 
             return null;
         }
-
-        /*public virtual void Resize(int nw, int nh)
-        {
-            this.Width = nw;
-            this.Height = nh;
-        }*/
 
         public static void DrawSelection(Graphics g, Figure f)
         {

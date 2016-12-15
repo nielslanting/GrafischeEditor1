@@ -1,4 +1,5 @@
 ﻿using GrafischeEditor1.Interfaces;
+using GrafischeEditor1.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -38,13 +39,13 @@ namespace GrafischeEditor1
             }
         }
 
-        public Ellipsis(int x, int y, int width, int height) : base(x, y)
+        public Ellipsis(int x, int y, int width, int height) : base(x, y, DrawEllipsis.Instance)
         {
             this.Width = width;
             this.Height = height;
         }
 
-        public override void Draw(Graphics g)
+        /*public override void Draw(Graphics g)
         {
             if (!this.Visible) return;
 
@@ -53,7 +54,7 @@ namespace GrafischeEditor1
             g.FillEllipse(brush, rectangle);
 
             Figure.DrawSelection(g, this);
-        }
+        }*/
 
         public override Figure Select(int x, int y)
         {           

@@ -90,7 +90,7 @@ namespace GrafischeEditor1
             }
         }
 
-        public Group(int x, int y, List<Figure> figures) : base(x, y)
+        public Group(int x, int y, List<Figure> figures) : base(x, y, null)
         {
             this.Figures = figures;
         }

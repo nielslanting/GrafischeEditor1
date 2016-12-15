@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafischeEditor1.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -151,54 +152,6 @@ namespace GrafischeEditor1
             return null;
         }
 
-        public override void Move(int rx, int ry)
-        {
-            foreach (var fig in this.Figures)
-            {
-                fig.X += rx;
-                fig.Y += ry;
-                //fig.Move(rx, ry);
-            }          
-        }
-
-        public override void Resize(int nw, int nh)
-        {
-            var tx = 0;
-            var ty = 0;
-
-            if (nw < 0)
-            {
-                tx = nw;
-                nw = Math.Abs(nw);
-            }
-
-            if (nh < 0)
-            {
-                ty = nh;
-                nh = Math.Abs(nh);
-            }
-
-            var x = this.X;
-            var y = this.Y;
-
-            var h = (double)(this.Height);
-            var w = (double)(this.Width);
-
-            double wratio = (double)nw / w;
-            double hratio = (double)nh / h;
-
-            foreach (Figure f in this.Figures)
-            {
-                f.Width = (int)((double)f.Width * wratio);
-                f.Height = (int)((double)f.Height * hratio);
-
-                f.X = (int)(nw * ((f.X - x) / w)) + x + tx;
-                f.Y = (int)(nh * ((f.Y - y) / h)) + y + ty;
-            }
-
-            //base.Resize(nw, nh);
-        }
-
         public static Group FromString(string input)
         {
             Regex r = new Regex("group [0-9]+");
@@ -265,6 +218,11 @@ namespace GrafischeEditor1
                 if (figure is Group)
                     ((Group)figure).Remove(f);
             }
+        }
+
+        public override void Visit(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

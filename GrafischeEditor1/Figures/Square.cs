@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafischeEditor1.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -84,6 +85,11 @@ namespace GrafischeEditor1
         public override string ToString()
         {
             return String.Format("rectangle {0} {1} {2} {3}", this.X, this.Y, this.Width, this.Height);
+        }
+
+        public override void Visit(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

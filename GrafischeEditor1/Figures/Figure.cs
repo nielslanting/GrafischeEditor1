@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafischeEditor1.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -67,17 +68,11 @@ namespace GrafischeEditor1
             return null;
         }
 
-        public virtual void Move(int rx, int ry)
-        {
-            this.X += rx;
-            this.Y += ry;
-        }
-
-        public virtual void Resize(int nw, int nh)
+        /*public virtual void Resize(int nw, int nh)
         {
             this.Width = nw;
             this.Height = nh;
-        }
+        }*/
 
         public static void DrawSelection(Graphics g, Figure f)
         {
@@ -99,5 +94,7 @@ namespace GrafischeEditor1
             g.FillRectangle(brush, bl);
             g.FillRectangle(brush, br);
         }
+
+        public abstract void Visit(IVisitor visitor);
     }
 }

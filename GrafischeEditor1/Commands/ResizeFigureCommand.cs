@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafischeEditor1.Visitors;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,8 +41,8 @@ namespace GrafischeEditor1.Commands
             int bx = this.SelectedFigure.X;
             int by = this.SelectedFigure.Y;
 
-            this.SelectedFigure.Resize(newWidth, newHeight);
-
+            ResizeVisitor resizeVisitor = new ResizeVisitor(newWidth, newHeight);
+            this.SelectedFigure.Visit(resizeVisitor);
 
             this.oldX = this.SelectedFigure.X - bx;
             this.oldY = this.SelectedFigure.Y - by;
@@ -51,9 +52,11 @@ namespace GrafischeEditor1.Commands
 
         public Figure Undo()
         {
-            this.SelectedFigure.Resize(this.oldWidth, this.oldHeight);
+            ResizeVisitor resizeVisitor = new ResizeVisitor(this.oldWidth, this.oldHeight);
+            this.SelectedFigure.Visit(resizeVisitor);
 
-            this.SelectedFigure.Move(this.oldX * -1, this.oldY * -1);
+            MoveVisitor moveVisitor = new MoveVisitor(this.oldX * -1, this.oldY * -1);
+            this.SelectedFigure.Visit(moveVisitor);
 
             return this.Figure;
         }

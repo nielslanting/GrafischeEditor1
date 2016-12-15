@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafischeEditor1.Visitors;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,13 +31,14 @@ namespace GrafischeEditor1.Commands
         {
             if (this.SelectedFigure == null) return this.Figure;
 
-            var rx = this.X - this.SelectedFigure.X;
-            var ry = this.Y - this.SelectedFigure.Y;
+            var dx = this.X - this.SelectedFigure.X;
+            var dy = this.Y - this.SelectedFigure.Y;
 
-            this.oldX = rx * -1;
-            this.oldY = ry * -1;
+            this.oldX = dx * -1;
+            this.oldY = dy * -1;
 
-            this.SelectedFigure.Move(rx, ry); 
+            MoveVisitor moveVisitor = new MoveVisitor(dx, dy);
+            this.SelectedFigure.Visit(moveVisitor);
 
             return this.Figure;
         }
@@ -45,7 +47,8 @@ namespace GrafischeEditor1.Commands
         {
             if (this.SelectedFigure == null) return this.Figure;
 
-            this.SelectedFigure.Move(this.oldX, this.oldY);
+            MoveVisitor moveVisitor = new MoveVisitor(this.oldX, this.oldY);
+            this.SelectedFigure.Visit(moveVisitor);
 
             return this.Figure;
         }

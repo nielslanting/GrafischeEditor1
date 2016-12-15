@@ -55,13 +55,7 @@ namespace GrafischeEditor1.Commands
                 {
                     var parent = ((Group)this.Figure).Remove(f);
                     this.Changed.Add(new Tuple<GroupOperation, Figure, Figure>(GroupOperation.Remove, parent, f));
-                }
-                    
-                if (f is Group && ((Group)f).Figures.Count == 1)
-                {
-                    //this.Changed.Add(new Tuple<GroupOperation, Figure, Figure>(GroupOperation.Replace, (Group)this.Figure, ((Group)f).Figures.FirstOrDefault()));
-                    //((Group)this.Figure).Replace(f, ((Group)f).Figures.FirstOrDefault());                    
-                }
+                }                   
                     
             }
                 

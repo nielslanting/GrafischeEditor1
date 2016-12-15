@@ -68,6 +68,7 @@
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IToolState.cs" />
+    <Compile Include="Interfaces\IVisitor.cs" />
     <Compile Include="States\MouseState.cs" />
     <Compile Include="Helpers\Parser.cs" />
     <Compile Include="Program.cs" />
@@ -79,6 +80,9 @@
     <Compile Include="Tools\RectangleTool.cs" />
     <Compile Include="Tools\MoveTool.cs" />
     <Compile Include="Tools\SelectionTool.cs" />
+    <Compile Include="Visitors\ResizeVisitor.cs" />
+    <Compile Include="Visitors\MoveVisitor.cs" />
+    <Compile Include="Visitors\SaveVisitor.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

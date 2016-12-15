@@ -19,7 +19,7 @@ namespace GrafischeEditor1.Figures
 
     public class Ornament : Figure
     {
-        public Figure _Figure { get; set; }
+        public Figure WrappedFigure { get; set; }
 
         public string Text { get; set; }
         public OrientationEnum Orientation { get; set; }
@@ -32,26 +32,26 @@ namespace GrafischeEditor1.Figures
 
         public Ornament(Figure figure, string text, OrientationEnum orientation) : base(figure.X, figure.Y, figure.Strategy)
         {
-            this._Figure = figure;
+            this.WrappedFigure = figure;
             this.Text = text;
             this.Orientation = orientation;
         }
 
         public override int X
         {
-            get { return _Figure.X; }
+            get { return WrappedFigure.X; }
             set
             {
-                if(_Figure != null) _Figure.X = value;
+                if(WrappedFigure != null) WrappedFigure.X = value;
             }
         }
 
         public override int Y
         {
-            get { return _Figure.Y; }
+            get { return WrappedFigure.Y; }
             set
             {
-                if (_Figure != null) _Figure.Y = value;
+                if (WrappedFigure != null) WrappedFigure.Y = value;
             }
         }
 
@@ -59,21 +59,21 @@ namespace GrafischeEditor1.Figures
         {
             get
             {
-                return _Figure.Selected;
+                return WrappedFigure.Selected;
             }
 
             set
             {
-                if (_Figure != null) _Figure.Selected = value;
+                if (WrappedFigure != null) WrappedFigure.Selected = value;
             }
         }
 
         public override IStrategy Strategy
         {
-            get { return _Figure.Strategy; }
+            get { return WrappedFigure.Strategy; }
             set
             {
-                if (_Figure != null) _Figure.Strategy = value;
+                if (WrappedFigure != null) WrappedFigure.Strategy = value;
             }
         }
 
@@ -81,18 +81,18 @@ namespace GrafischeEditor1.Figures
         {
             get
             {
-                return _Figure.Height;
+                return WrappedFigure.Height;
             }
 
             set
             {
-                _Figure.Height = value;
+                WrappedFigure.Height = value;
             }
         }
 
         public override void Draw(Graphics g)
         {
-            _Figure.Draw(g);
+            WrappedFigure.Draw(g);
 
             if (!this.Visible) return;
 
@@ -104,20 +104,20 @@ namespace GrafischeEditor1.Figures
             switch (Orientation)
             {
                 case OrientationEnum.TOP:
-                    x = _Figure.X + (_Figure.Width / 2) - ((int)g.MeasureString(this.Text, font).Width / 2);
-                    y = _Figure.Y - (int)g.MeasureString(this.Text, font).Height;
+                    x = WrappedFigure.X + (WrappedFigure.Width / 2) - ((int)g.MeasureString(this.Text, font).Width / 2);
+                    y = WrappedFigure.Y - (int)g.MeasureString(this.Text, font).Height;
                     break;
                 case OrientationEnum.BOTTOM:
-                    x = _Figure.X + (_Figure.Width / 2) - ((int)g.MeasureString(this.Text, font).Width / 2);
-                    y = _Figure.Y + _Figure.Height;
+                    x = WrappedFigure.X + (WrappedFigure.Width / 2) - ((int)g.MeasureString(this.Text, font).Width / 2);
+                    y = WrappedFigure.Y + WrappedFigure.Height;
                     break;
                 case OrientationEnum.LEFT:
-                    x = _Figure.X - ((int)g.MeasureString(this.Text, font).Width);
-                    y = _Figure.Y + _Figure.Height / 2 - ((int)g.MeasureString(this.Text, font).Height / 2); ;
+                    x = WrappedFigure.X - ((int)g.MeasureString(this.Text, font).Width);
+                    y = WrappedFigure.Y + WrappedFigure.Height / 2 - ((int)g.MeasureString(this.Text, font).Height / 2); ;
                     break;
                 case OrientationEnum.RIGHT:
-                    x = _Figure.X + _Figure.Width;
-                    y = _Figure.Y + _Figure.Height / 2 - ((int)g.MeasureString(this.Text, font).Height / 2); ;
+                    x = WrappedFigure.X + WrappedFigure.Width;
+                    y = WrappedFigure.Y + WrappedFigure.Height / 2 - ((int)g.MeasureString(this.Text, font).Height / 2); ;
                     break;
             }
 
@@ -131,28 +131,28 @@ namespace GrafischeEditor1.Figures
         {
             get
             {
-                return _Figure.Width;
+                return WrappedFigure.Width;
             }
 
             set
             {
-                _Figure.Width = value;
+                WrappedFigure.Width = value;
             }
         }
 
         public override void Select()
         {
-            _Figure.Select();
+            WrappedFigure.Select();
         }
         public override Figure Select(int x, int y)
         {
-            return _Figure.Select(x, y);
+            return WrappedFigure.Select(x, y);
         }
 
         public override void Visit(IVisitor visitor)
         {
             visitor.Visit(this);
-            visitor.Visit(this._Figure);
+            visitor.Visit(this.WrappedFigure);
         }
 
         public override string ToString()
@@ -162,10 +162,10 @@ namespace GrafischeEditor1.Figures
 
         public override IEnumerable<Figure> Enumerate()
         {
-            var result = new List<Figure>() { this, this._Figure };
+            var result = new List<Figure>() { this, this.WrappedFigure };
 
-            if (_Figure is Ornament || _Figure is Group)
-                result.AddRange(_Figure.Enumerate().Skip(1));
+            if (WrappedFigure is Ornament || WrappedFigure is Group)
+                result.AddRange(WrappedFigure.Enumerate().Skip(1));
                     
             return result;
         }

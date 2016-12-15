@@ -51,14 +51,14 @@ namespace GrafischeEditor1
                     {
                         var copy = ornamentStack;
                         ornamentStack = (Ornament)figure;
-                        ornamentStack._Figure = copy;
+                        ornamentStack.WrappedFigure = copy;
                     }
                     continue;
                 }                               
                 
                 if(ornamentStack != null && !line.Contains("ornament"))
                 {
-                    firstOrnament._Figure = figure;
+                    firstOrnament.WrappedFigure = figure;
                     figure = ornamentStack;
 
                     ornamentStack = null;

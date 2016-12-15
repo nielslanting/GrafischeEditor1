@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafischeEditor1.Figures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,11 @@ namespace GrafischeEditor1
 
             List<Group> groupStack = new List<Group>();
 
+            Ornament ornamentStack = null;
+            Ornament firstOrnament = null;
+
             foreach (string line in splits.Skip(1))
             {
-                if (line.Contains("ornament")) continue; // Skip ornaments for now
 
                 // Generate the figure
                 Figure figure = null;
@@ -35,13 +38,42 @@ namespace GrafischeEditor1
                 else if (line.Contains("rectangle"))
                     figure = Square.FromString(line);
 
+                else if (line.Contains("ornament"))
+                {
+                    figure = Ornament.FromString(line);
+
+                    if(ornamentStack == null)
+                    {
+                        ornamentStack = (Ornament)figure;
+                        firstOrnament = (Ornament)figure;
+                    }
+                    else
+                    {
+                        var copy = ornamentStack;
+                        ornamentStack = (Ornament)figure;
+                        ornamentStack._Figure = copy;
+                    }
+                    continue;
+                }                               
+                
+                if(ornamentStack != null && !line.Contains("ornament"))
+                {
+                    firstOrnament._Figure = figure;
+                    figure = ornamentStack;
+
+                    ornamentStack = null;
+                    firstOrnament = null;
+                }
+
                 var last = groupStack.LastOrDefault();
 
-                if(figure != null)
+                if (figure != null)
                 {
                     if (last != null)
                     {
+
                         last.Figures.Add(figure);
+
                         if (last.Figures.Capacity == last.Figures.Count)
                             groupStack.Remove(last);
                     }
@@ -68,7 +100,7 @@ namespace GrafischeEditor1
                 bool current = false;
 
                 // Decrement group counter
-                if (count.Count > 0 && count.LastOrDefault() > 0)
+                if ( !(f is Ornament) && count.Count > 0 && count.LastOrDefault() > 0)
                     count[count.Count - 1]--;
 
                 // Remove count if its zero
@@ -77,7 +109,6 @@ namespace GrafischeEditor1
                     count.Remove(count.LastOrDefault());
                     indent--;
                 }
-
 
                 // Add counts if its a group
                 if (f is Group)

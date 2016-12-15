@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GrafischeEditor1.Interfaces;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace GrafischeEditor1.Figures
 {
@@ -22,6 +23,13 @@ namespace GrafischeEditor1.Figures
 
         public string Text { get; set; }
         public OrientationEnum Orientation { get; set; }
+
+        public Ornament(string text, OrientationEnum orientation) : base(0, 0, null)
+        {
+            this.Text = text;
+            this.Orientation = orientation;
+        }
+
         public Ornament(Figure figure, string text, OrientationEnum orientation) : base(figure.X, figure.Y, figure.Strategy)
         {
             this._Figure = figure;
@@ -97,11 +105,11 @@ namespace GrafischeEditor1.Figures
                     y = _Figure.Y - 20;
                     break;
                 case OrientationEnum.BOTTOM:
-                    x = _Figure.X;
+                    x = _Figure.X + _Figure.Width / 2; ;
                     y = _Figure.Y + _Figure.Height;
                     break;
                 case OrientationEnum.LEFT:
-                    x = _Figure.X;
+                    x = _Figure.X - 20;
                     y = _Figure.Y + _Figure.Height / 2;
                     break;
                 case OrientationEnum.RIGHT:
@@ -159,6 +167,30 @@ namespace GrafischeEditor1.Figures
                 result.AddRange(_Figure.Enumerate().Skip(1));
                     
             return result;
+        }
+
+        public static Ornament FromString(string input)
+        {
+            Regex r = new Regex("ornament (top|bottom|left|right) \"(.*?)\"+");
+
+            if (r.Match(input).Value != input) return null;
+
+            var splits = input.Split(' ');
+
+            OrientationEnum? oe = null;
+
+            switch (splits[1])
+            {
+                case "top": oe = OrientationEnum.TOP; break;
+                case "bottom": oe = OrientationEnum.BOTTOM; break;
+                case "left": oe = OrientationEnum.LEFT; break;
+                case "right": oe = OrientationEnum.RIGHT; break;
+            }
+
+            var name = splits[2];
+            name = name.Substring(1, name.Length - 2);
+
+            return new Ornament(name, (OrientationEnum)oe);
         }
     }
 }

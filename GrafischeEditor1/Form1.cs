@@ -2,6 +2,7 @@
 using GrafischeEditor1.Helpers;
 using GrafischeEditor1.Interfaces;
 using GrafischeEditor1.Tools;
+using GrafischeEditor1.Visitors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -188,7 +189,10 @@ namespace GrafischeEditor1
         private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             var name = saveFileDialog.FileName;
-            File.WriteAllText(name, Parser.GroupToString((Group)this.Figure));
+
+            SaveVisitor saveVisitor = new SaveVisitor(name);
+            saveVisitor.Visit((Group)this.Figure);
+            saveVisitor.Save();
         }
 
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)

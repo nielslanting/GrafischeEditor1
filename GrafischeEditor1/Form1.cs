@@ -373,7 +373,7 @@ namespace GrafischeEditor1
 
             var o = new Ornament(selection, name, (OrientationEnum)oe);
 
-            ((Group)this.Figure).Replace(selection, o);
+            this.Figure = this.FiguresStack.Execute(new AddOrnamentCommand(this.Figure, selection, o), this.Figure);
         }
     }
 }

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddOrnamentCommand.cs" />
     <Compile Include="Commands\CreateGroupCommand.cs" />
     <Compile Include="Commands\MoveFigureCommand.cs" />
     <Compile Include="Commands\ResizeFigureCommand.cs" />

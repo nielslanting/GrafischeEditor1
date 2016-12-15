@@ -97,30 +97,31 @@ namespace GrafischeEditor1.Figures
             if (!this.Visible) return;
 
             int x = -10, y = -10;
+            var font = new System.Drawing.Font("Arial", 16);
+            var brush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+            var format = new System.Drawing.StringFormat();
 
             switch (Orientation)
             {
                 case OrientationEnum.TOP:
-                    x = _Figure.X + _Figure.Width / 2;
-                    y = _Figure.Y - 20;
+                    x = _Figure.X + (_Figure.Width / 2) - ((int)g.MeasureString(this.Text, font).Width / 2);
+                    y = _Figure.Y - (int)g.MeasureString(this.Text, font).Height;
                     break;
                 case OrientationEnum.BOTTOM:
-                    x = _Figure.X + _Figure.Width / 2; ;
+                    x = _Figure.X + (_Figure.Width / 2) - ((int)g.MeasureString(this.Text, font).Width / 2);
                     y = _Figure.Y + _Figure.Height;
                     break;
                 case OrientationEnum.LEFT:
-                    x = _Figure.X - 20;
-                    y = _Figure.Y + _Figure.Height / 2;
+                    x = _Figure.X - ((int)g.MeasureString(this.Text, font).Width);
+                    y = _Figure.Y + _Figure.Height / 2 - ((int)g.MeasureString(this.Text, font).Height / 2); ;
                     break;
                 case OrientationEnum.RIGHT:
                     x = _Figure.X + _Figure.Width;
-                    y = _Figure.Y + _Figure.Height / 2;
+                    y = _Figure.Y + _Figure.Height / 2 - ((int)g.MeasureString(this.Text, font).Height / 2); ;
                     break;
             }
 
-            var font = new System.Drawing.Font("Arial", 16);
-            var brush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
-            var format = new System.Drawing.StringFormat();
+
 
             g.DrawString(this.Text, font, brush, x, y, format);
 

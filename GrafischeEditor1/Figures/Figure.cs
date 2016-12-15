@@ -16,7 +16,7 @@ namespace GrafischeEditor1
         public abstract int Width { get; set; }
         public abstract int Height { get; set; }
 
-        public IStrategy Strategy { get; set; }
+        public virtual IStrategy Strategy { get; set; }
 
         public bool Visible { get; set; } = true;
 
@@ -97,5 +97,10 @@ namespace GrafischeEditor1
         }
 
         public abstract void Visit(IVisitor visitor);
+
+        public virtual IEnumerable<Figure> Enumerate()
+        {
+            return new List<Figure>() { this };
+        }        
     }
 }

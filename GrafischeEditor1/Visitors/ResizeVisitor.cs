@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GrafischeEditor1.Figures;
 
 namespace GrafischeEditor1.Visitors
 {
@@ -61,6 +62,16 @@ namespace GrafischeEditor1.Visitors
         }
 
         public void Visit(Square figure)
+        {
+            figure.Width = this.NewWidth;
+            figure.Height = this.NewHeight;
+        }
+
+        public void Visit(Ornament ornament)
+        {
+        }
+
+        public void Visit(Figure figure)
         {
             figure.Width = this.NewWidth;
             figure.Height = this.NewHeight;

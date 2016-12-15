@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GrafischeEditor1.Figures;
 
 namespace GrafischeEditor1.Visitors
 {
@@ -37,6 +38,16 @@ namespace GrafischeEditor1.Visitors
         public void Save()
         {
             File.WriteAllText(this.PathName, this.Result);
+        }
+
+        public void Visit(Ornament ornament)
+        {
+            this.Result += ornament.ToString();
+        }
+
+        public void Visit(Figure figure)
+        {
+            this.Result += figure.ToString();
         }
     }
 }

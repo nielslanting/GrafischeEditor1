@@ -1,4 +1,5 @@
-﻿using GrafischeEditor1.Interfaces;
+﻿using GrafischeEditor1.Figures;
+using GrafischeEditor1.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -95,6 +96,8 @@ namespace GrafischeEditor1
             this.Figures = figures;
         }
 
+        public bool Real { get; set; } = true;
+
         public override void Draw(Graphics g)
         {
             if (!this.Visible) return;
@@ -147,7 +150,7 @@ namespace GrafischeEditor1
             }
 
             if (result.Count == 1) return result.FirstOrDefault();
-            else if (result.Count > 1) return new Group(0, 0, result);
+            else if (result.Count > 1) return new Group(0, 0, result) { Real = false };
 
             return null;
         }
@@ -168,7 +171,7 @@ namespace GrafischeEditor1
             return String.Format("group {0}", this.Figures.Count);
         }
 
-        public IEnumerable<Figure> Enumerate()
+        public override IEnumerable<Figure> Enumerate()
         {
             var flat = new List<Figure>() { this };
 
@@ -178,6 +181,11 @@ namespace GrafischeEditor1
 
                 if (f is Group)
                     flat.AddRange(((Group)f).Enumerate().Skip(1));
+
+                if(f is Ornament)
+                {
+                    flat.AddRange(((Ornament)f).Enumerate().Skip(1));
+                }
             }
 
             return flat;

@@ -52,6 +52,7 @@
             this.listBoxUndo = new System.Windows.Forms.ListBox();
             this.listBoxRedo = new System.Windows.Forms.ListBox();
             this.panel1 = new GrafischeEditor1.Display();
+            this.buttonOrnament = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -209,9 +210,9 @@
             // checkedListBoxFigures
             // 
             this.checkedListBoxFigures.FormattingEnabled = true;
-            this.checkedListBoxFigures.Location = new System.Drawing.Point(739, 205);
+            this.checkedListBoxFigures.Location = new System.Drawing.Point(739, 235);
             this.checkedListBoxFigures.Name = "checkedListBoxFigures";
-            this.checkedListBoxFigures.Size = new System.Drawing.Size(182, 274);
+            this.checkedListBoxFigures.Size = new System.Drawing.Size(182, 244);
             this.checkedListBoxFigures.TabIndex = 10;
             this.checkedListBoxFigures.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxFigures_ItemCheck);
             this.checkedListBoxFigures.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxFigures_SelectedIndexChanged);
@@ -251,11 +252,22 @@
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
+            // buttonOrnament
+            // 
+            this.buttonOrnament.Location = new System.Drawing.Point(739, 202);
+            this.buttonOrnament.Name = "buttonOrnament";
+            this.buttonOrnament.Size = new System.Drawing.Size(182, 23);
+            this.buttonOrnament.TabIndex = 13;
+            this.buttonOrnament.Text = "Create ornament";
+            this.buttonOrnament.UseVisualStyleBackColor = true;
+            this.buttonOrnament.Click += new System.EventHandler(this.buttonOrnament_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1436, 532);
+            this.Controls.Add(this.buttonOrnament);
             this.Controls.Add(this.listBoxRedo);
             this.Controls.Add(this.listBoxUndo);
             this.Controls.Add(this.checkedListBoxFigures);
@@ -303,6 +315,7 @@
         private System.Windows.Forms.SaveFileDialog exportFileDialog;
         private System.Windows.Forms.ListBox listBoxUndo;
         private System.Windows.Forms.ListBox listBoxRedo;
+        private System.Windows.Forms.Button buttonOrnament;
     }
 }
 

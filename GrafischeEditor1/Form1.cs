@@ -1,4 +1,5 @@
 ﻿using GrafischeEditor1.Commands;
+using GrafischeEditor1.Figures;
 using GrafischeEditor1.Helpers;
 using GrafischeEditor1.Interfaces;
 using GrafischeEditor1.Tools;
@@ -270,7 +271,7 @@ namespace GrafischeEditor1
                     bool current = false;
 
                     // Decrement group counter
-                    if (count.Count > 0 && count.LastOrDefault() > 0)
+                    if ((!(f is Ornament)) && count.Count > 0 && count.LastOrDefault() > 0)
                         count[count.Count - 1]--;
 
                     // Remove count if its zero
@@ -342,6 +343,37 @@ namespace GrafischeEditor1
                 this.Figure = this.FiguresStack.Execute(new CreateGroupCommand(selection, this.Figure), this.Figure);
             else
                 MessageBox.Show("You need to select multiple items");
+        }
+
+        private void buttonOrnament_Click(object sender, EventArgs e)
+        {
+            var selection = this.Figure.GetSelected();
+
+            if(selection == null || (selection is Group && ((Group)selection).Real == false))
+            {
+                MessageBox.Show("Please select a valid figure");
+                return;
+            }
+                
+            string name = Microsoft.VisualBasic.Interaction.InputBox("What is the name of the ornament?", "What is the name of the ornament?", "test", -1, -1);
+            string orientation = Microsoft.VisualBasic.Interaction.InputBox("top | bottom | left | right", "What is the orientation?", "top", -1, -1).ToLowerInvariant();
+
+            OrientationEnum? oe = null;
+
+            switch (orientation)
+            {
+                case "top": oe = OrientationEnum.TOP; break;
+                case "bottom": oe = OrientationEnum.BOTTOM; break;
+                case "left": oe = OrientationEnum.LEFT; break;
+                case "right": oe = OrientationEnum.RIGHT; break;
+                default:
+                    MessageBox.Show("Invalid orientation specified");
+                    return;
+            }
+
+            var o = new Ornament(selection, name, (OrientationEnum)oe);
+
+            ((Group)this.Figure).Replace(selection, o);
         }
     }
 }
